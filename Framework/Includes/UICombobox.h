@@ -66,6 +66,10 @@ public:
 	void RemoveItem(std::wstring item);
 	int IndexOf(std::wstring item);
 
+	typedef void(*callback_function)(UIElement* sender);
+	// Event Handler
+	void SetSelectedIndexChangedEventHandler(callback_function func);
+
 	~UICombobox();
 
 private:
@@ -89,6 +93,8 @@ private:
 
 	EventHandler* ItemSelectionHandler;
 	void SetItemSelectionHandler();
+
+	EventHandler* SelectedIndexChangedHandler;
 };
 
 #endif // !UICOMBOBOX_H

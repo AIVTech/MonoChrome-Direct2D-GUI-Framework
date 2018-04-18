@@ -1,6 +1,7 @@
 ﻿#include "UICombobox.h"
 #include "MouseClickEventHandler.h"
 #include "ComboboxItemEventHandler.h"
+#include "SelectedIndexChangedEventHandler.h"
 
 void Mouse_OnClick(UIElement* sender)
 {
@@ -110,6 +111,11 @@ void UICombobox::SetMouseClickedHandler(callback_function func)
 void UICombobox::SetItemSelectionHandler()
 {
 	this->ItemSelectionHandler = new ComboboxItemEventHandler(this);
+}
+
+void UICombobox::SetSelectedIndexChangedEventHandler(callback_function func)
+{
+	this->SelectedIndexChangedHandler = new SelectedIndexChangedEventHandler(this, func);
 }
 
 void UICombobox::RemoveItem(int index)
