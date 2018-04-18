@@ -15,7 +15,7 @@ public:
 	~MouseHoverEventHandler();
 
 private:
-	UIElement * sender;
+	UIElement* sender;
 	callback_function CallbackFuncOn;
 	callback_function CallbackFuncOff;
 };

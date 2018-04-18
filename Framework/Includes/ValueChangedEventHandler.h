@@ -16,7 +16,7 @@ public:
 	~ValueChangedEventHandler();
 
 private:
-	UIElement * sender;
+	UIElement* sender;
 	callback_function CallbackFunc;
 };
 

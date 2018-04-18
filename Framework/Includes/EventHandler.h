@@ -13,7 +13,7 @@ public:
 protected:
 
 private:
-
+	
 };
 
 #endif // !EVENTHANDLER_H

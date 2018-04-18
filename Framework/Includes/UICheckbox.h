@@ -41,6 +41,9 @@ public:
 	bool GetChecked() { return this->Checked; }
 	bool GetVisible() { return this->Visible; }
 	bool GetEnabled() { return this->Enabled; }
+	bool GetRoundedCorners() { return this->RoundedCorners; }
+	float GetRoundCornersRadiusX() { return this->roundCornerRadiusX; }
+	float GetRoundCornersRadiusY() { return this->roundCornerRadiusY; }
 
 	// Setters
 	void SetText(std::wstring text) { this->Text = text; }
@@ -55,7 +58,7 @@ public:
 	void SetChecked(bool state) { this->Checked = state; }
 	void SetVisible(bool state) { this->Visible = state; }
 	void SetEnabled(bool state)
-	{
+	{ 
 		this->Enabled = state;
 		if (state)
 		{
@@ -66,6 +69,8 @@ public:
 			a = 0.14f;
 		}
 	}
+	void SetRoundedCorners(bool state) { this->RoundedCorners = state; }
+	void SetRoundedCornersRadii(float radX, float radY) { this->roundCornerRadiusX = radX; this->roundCornerRadiusY = radY; }
 
 	// Setters for Event Handlers
 	typedef void(*callback_function)(UIElement* sender);
@@ -74,7 +79,7 @@ public:
 	virtual ~UICheckbox();
 
 private:
-	Graphics * graphics;
+	Graphics* graphics;
 	std::wstring Text = std::wstring(L"");
 	std::wstring FontName = std::wstring(L"Arial");
 	int FontSize = 10;
@@ -83,6 +88,8 @@ private:
 	float Margins = 1.0f;
 	bool Visible = true;
 	bool Enabled = true;
+	bool RoundedCorners = false;
+	float roundCornerRadiusX = 4, roundCornerRadiusY = 4;
 
 	// Checked State
 	bool Checked = false;
@@ -99,5 +106,6 @@ private:
 	EventHandler* StateEventHandler;
 
 };
+
 
 #endif // !UICHECKBOX_H

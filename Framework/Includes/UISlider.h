@@ -31,7 +31,7 @@ public:
 	float GetKnobPosX() { return knobPosX; }
 	bool GetVisible() { return Visible; }
 	bool GetEnabled() { return Enabled; }
-
+	
 
 	// Setters
 	void SetPosition(float x, float y) { this->xPos = x; this->yPos = y; this->knobPosX = xPos + currentValue; }
@@ -45,9 +45,9 @@ public:
 	void SetIntervals(float val) { this->Intervals = val; }
 	void SetKnobPosX(float val) { this->knobPosX = val; }
 	void SetVisible(bool state) { this->Visible = state; }
-	void SetEnabled(bool state)
-	{
-		this->Enabled = state;
+	void SetEnabled(bool state) 
+	{ 
+		this->Enabled = state; 
 		if (state)
 		{
 			a = normalAlpha;
@@ -66,7 +66,7 @@ public:
 	~UISlider();
 
 private:
-	Graphics * graphics;
+	Graphics* graphics;
 	float xPos = 0, yPos = 0, Width = 120;
 	float r = 0.2f, g = 0.2f, b = 0.2f, a = 1.0f, normalAlpha = a;
 	float Height = 4;
@@ -78,7 +78,7 @@ private:
 	// some slider-knob attributes
 	float knobPosX = xPos + currentValue;
 	float knobColorR = 1.0f, knobColorG = 1.0f, knobColorB = 1.0f, knobColorA = 1.0f;
-	float Radius = Height * 2;
+	float Radius = Height*2;
 
 	// Event Handler
 	EventHandler* ValueChangedHandler;

@@ -39,7 +39,7 @@ public:
 	bool GetFilled() { return this->Filled; }
 	bool GetVisible() { return this->Visible; }
 	bool GetEnabled() { return true; }
-
+	
 
 	// Setters
 	void SetText(std::wstring text) { this->Text = text; }
@@ -59,7 +59,7 @@ public:
 	virtual ~UILabel();
 
 private:
-	Graphics * graphics;
+	Graphics* graphics;
 	std::wstring Text = std::wstring(L"");
 	std::wstring FontName = std::wstring(L"Arial");
 	int FontSize = 10;
@@ -77,4 +77,6 @@ private:
 	// Text Border
 	D2D1_RECT_F TextBorder;
 };
+
+
 #endif

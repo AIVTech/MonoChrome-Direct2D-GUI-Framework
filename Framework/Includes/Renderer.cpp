@@ -29,3 +29,4 @@ void Renderer::Render(std::vector<UIElement*>& elements)
 
 	graphics->EndDraw();
 }
+

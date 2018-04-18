@@ -3,13 +3,13 @@
 
 #include "Graphics.h"
 
-class UIElement
+class UIElement 
 {
 public:
 
 	virtual void Draw() = 0;
 	virtual Graphics* GetGraphics() = 0;
-
+	
 	virtual float GetPosX() = 0;
 	virtual float GetPosY() = 0;
 	virtual float GetWidth() = 0;

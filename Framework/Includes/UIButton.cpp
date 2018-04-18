@@ -126,10 +126,20 @@ UIButton::~UIButton()
 
 void UIButton::Draw()
 {
-	this->graphics->DrawRectangle(xPos, yPos, Width, Height, r, g, b, a, Stroke, Filled); // button itself
+	if (!this->RoundedCorners)
+	{
+		this->graphics->DrawRectangle(xPos, yPos, Width, Height, r, g, b, a, Stroke, Filled); // button itself
 
-	this->graphics->DrawRectangle(xPos - 0.2f, yPos - 0.2f, Width + 0.2f, Height + 0.2f,
-		borderR, borderG, borderB, borderA, borderStroke, false); // border rectangle to indicate that its a button
+		this->graphics->DrawRectangle(xPos - 0.2f, yPos - 0.2f, Width + 0.2f, Height + 0.2f,
+			borderR, borderG, borderB, borderA, borderStroke, false); // border rectangle to indicate that its a button
+	}
+	else
+	{
+		this->graphics->DrawRoundedRectangle(xPos, yPos, Width, Height, roundCornerRadiusX, roundCornerRadiusY, r, g, b, a, Stroke, Filled); // button itself
+
+		this->graphics->DrawRoundedRectangle(xPos - 0.2f, yPos - 0.2f, Width + 0.2f, Height + 0.2f, roundCornerRadiusX, roundCornerRadiusY,
+			borderR, borderG, borderB, borderA, borderStroke, false); // border rectangle to indicate that its a button
+	}
 
 	this->graphics->drawText(std::wstring(Text), FontName, FontSize,
 		xPos + Margins, yPos + Margins, Width - Margins, Height - Margins, rText, gText, bText, aText); // text inside a button
@@ -144,3 +154,4 @@ void UIButton::SetMouseHoverEventHandler(callback_function funcOn, callback_func
 {
 	this->MouseHoverHandler = new MouseHoverEventHandler(this, funcOn, funcOff);
 }
+

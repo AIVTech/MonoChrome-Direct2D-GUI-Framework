@@ -101,6 +101,6 @@ UILabel::~UILabel()
 void UILabel::Draw()
 {
 	this->graphics->DrawRectangle(xPos, yPos, Width, Height, r, g, b, a, Stroke, Filled);
-	this->graphics->drawText(std::wstring(Text), FontName, FontSize,
-		xPos + Margins, yPos + Margins, Width - Margins, Height - Margins, rText, gText, bText, aText);
+	this->graphics->drawText(std::wstring(Text), FontName, FontSize, 
+		xPos+Margins, yPos+Margins, Width-Margins, Height-Margins, rText, gText, bText, aText);
 }

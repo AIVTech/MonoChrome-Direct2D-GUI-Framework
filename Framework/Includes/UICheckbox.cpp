@@ -98,13 +98,21 @@ UICheckbox::~UICheckbox()
 
 void UICheckbox::Draw()
 {
-	graphics->DrawRectangle(xPos, yPos, Size, Size, r, g, b, a, 0, true);
-	graphics->drawText(Text, FontName, FontSize, xPos + Size, yPos - Size / 2, TextWidth, TextHeight, rText, gText, bText, aText);
+	if (!this->RoundedCorners)
+	{
+		graphics->DrawRectangle(xPos, yPos, Size, Size, r, g, b, a, 0, true);
+	}
+	else
+	{
+		graphics->DrawRoundedRectangle(xPos, yPos, Size, Size, roundCornerRadiusX, roundCornerRadiusY, r, g, b, a, 0, true);
+	}
+
+	graphics->drawText(Text, FontName, FontSize, xPos+Size, yPos-Size/2, TextWidth, TextHeight, rText, gText, bText, aText);
 
 	if (Checked)
 	{
 		// Indicate that the checkbox is checked.
-		graphics->drawText(L"✔", L"Verdana", Size - 10, xPos + 0.2f, yPos + 0.2f, Size - 0.2f, Size - 0.2f, 0.0f, 0.0f, 0.0f, 1.0f);
+		graphics->drawText(L"✔", L"Verdana", Size-10, xPos+0.2f, yPos+0.2f, Size-0.2f, Size-0.2f, 0.0f, 0.0f, 0.0f, 1.0f);
 	}
 }
 
@@ -117,3 +125,5 @@ void UICheckbox::SetMouseClickHandler(callback_function func)
 {
 	MouseClickHandler = new MouseClickEventHandler(this, func);
 }
+
+

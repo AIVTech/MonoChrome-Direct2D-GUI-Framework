@@ -43,7 +43,7 @@ void UISlider::Draw()
 {
 	// draw a bar
 	this->graphics->DrawRectangle(xPos, yPos, Width, Height, r, g, b, a, 2, true);
-
+	
 	// draw a slider-knob / handle
 	this->graphics->DrawCircle(knobPosX, yPos, Radius, knobColorR, knobColorG, knobColorB, knobColorA, 1, true);
 }
@@ -57,3 +57,4 @@ void UISlider::SetValueChangedEventHandler(callback_function func)
 {
 	this->ValueChangedHandler = new ValueChangedEventHandler(this, func);
 }
+

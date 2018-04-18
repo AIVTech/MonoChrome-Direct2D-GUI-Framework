@@ -17,8 +17,9 @@ public:
 	~MouseMovedWhileDownEventHandler();
 
 private:
-	UIElement * sender;
+	UIElement* sender;
 	callback_function CallbackFunc;
 };
+
 
 #endif // !MOUSEMOVEDWHILEDOWNEVENTHANDLER_H

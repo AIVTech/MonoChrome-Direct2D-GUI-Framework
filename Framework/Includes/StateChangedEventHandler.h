@@ -19,7 +19,7 @@ public:
 	~StateChangedEventHandler();
 
 private:
-	UIElement * sender;
+	UIElement* sender;
 	callback_function CheckboxCallbackEventFunc;
 	bool oldState;
 };

@@ -23,7 +23,7 @@ public:
 	~Renderer();
 
 private:
-	Graphics * graphics;
+	Graphics* graphics;
 };
 
 
