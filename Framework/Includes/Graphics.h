@@ -27,6 +27,9 @@ public:
 	void drawText(const std::wstring& text, std::wstring font, WCHAR fontSize,
 		float xPos, float yPos, float width, float height, float r, float g, float b, float a);
 
+	void DrawArc(float startX, float startY, float endX, float endY, float size, 
+		D2D1_SWEEP_DIRECTION direction, D2D1_ARC_SIZE arcSize, float r, float g, float b, float a, float stroke);
+
 	~Graphics();
 
 private:

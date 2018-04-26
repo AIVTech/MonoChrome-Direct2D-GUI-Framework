@@ -107,3 +107,38 @@ void Graphics::drawText(const std::wstring& text, std::wstring font, WCHAR fontS
 	RenderTarget->DrawTextW(text.c_str(), text.size(), format, D2D1::RectF(xPos, yPos, xPos+width, yPos+height), brush);
 }
 
+
+void Graphics::DrawArc(float startX, float startY, float endX, float endY, float size, 
+	D2D1_SWEEP_DIRECTION direction, D2D1_ARC_SIZE arcSize, float r, float g, float b, float a, float stroke)
+{
+	ID2D1SolidColorBrush* brush;
+	RenderTarget->CreateSolidColorBrush(D2D1::ColorF(r, g, b, a), &brush);
+	ID2D1PathGeometry* path;
+	D2D1_POINT_2F begin;
+	begin.x = startX;
+	begin.y = startY;
+	D2D1_POINT_2F end;
+	end.x = endX;
+	end.y = endY;
+
+	D2D1_ARC_SEGMENT arc = {
+		end,
+		{ size, size },
+		0.0f,
+		direction,
+		arcSize
+	};
+
+	Factory->CreatePathGeometry(&path);
+	ID2D1GeometrySink* sink;
+	path->Open(&sink);
+
+	sink->BeginFigure(begin, D2D1_FIGURE_BEGIN_FILLED);
+	sink->AddArc(arc);
+	sink->EndFigure(D2D1_FIGURE_END_OPEN);
+	sink->Close();
+
+	RenderTarget->DrawGeometry(path, brush, stroke);
+	
+}
+
