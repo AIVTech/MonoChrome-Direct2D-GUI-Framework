@@ -14,3 +14,5 @@
 #include "ValueChangedEventHandler.h"
 #include "ComboboxItemEventHandler.h"
 #include "UICircularProgressBar.h"
+#include "UITextbox.h"
+#include "UITextboxStateHandler.h"
