@@ -62,12 +62,12 @@ void MouseMovedWhileDownEventHandler::StartListener()
 				else
 				{
 					float oldValue = slider->GetValue();
-					slider->SetKnobPosX(pos.x);
+					slider->SetKnobPosX((float)pos.x);
 					float distanceToKnob = slider->GetKnobPosX() - slider->GetPosX();
 					float valueInPercent = distanceToKnob / slider->GetWidth();
 					//float CurrentValue = valueInPercent * (slider->GetMaxValue() - slider->GetMinValue()) + slider->GetMinValue();
 
-					int tickCount = (slider->GetMaxValue() - slider->GetMinValue()) / slider->GetIntervals();
+					int tickCount = (int)((slider->GetMaxValue() - slider->GetMinValue()) / slider->GetIntervals());
 					float distanceToEachTick = slider->GetWidth() / (float)tickCount;
 
 					int ticksPast = (int)(distanceToKnob / distanceToEachTick);

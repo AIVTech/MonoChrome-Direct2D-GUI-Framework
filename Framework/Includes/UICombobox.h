@@ -35,6 +35,7 @@ public:
 	bool GetRoundedCorners() { return this->RoundedCorners; }
 	float GetRoundCornersRadiusX() { return this->roundCornerRadiusX; }
 	float GetRoundCornersRadiusY() { return this->roundCornerRadiusY; }
+	float GetAlphaComponent() { return this->a; }
 
 	// Setters
 	void SetPosition(float x, float y) { this->xPos = x; this->yPos = y; }
@@ -60,6 +61,32 @@ public:
 	void SetHoverIndex(int index) { this->hoverIndex = index; }
 	void SetRoundedCorners(bool state) { this->RoundedCorners = state; }
 	void SetRoundedCornersRadii(float radX, float radY) { this->roundCornerRadiusX = radX; this->roundCornerRadiusY = radY; }
+	void FadeOut(int animationDelay)
+	{
+		std::thread t([this, animationDelay] {
+			for (float i = a * 100; i >= 0; i--)
+			{
+				Sleep(animationDelay);
+				a = i / 100;
+				this->normalAlpha = a;
+			}
+			this->Visible = false;
+		});
+		t.detach();
+	}
+	void FadeIn(int animationDelay, float finalAlpha)
+	{
+		std::thread t([this, animationDelay, finalAlpha] {
+			this->Visible = true;
+			for (float i = a; i <= finalAlpha; i += 0.01f)
+			{
+				Sleep(animationDelay);
+				a = i;
+				this->normalAlpha = a;
+			}
+		});
+		t.detach();
+	}
 
 	void AddItem(std::wstring item) { this->Items.push_back(item); }
 	void RemoveItem(int index);

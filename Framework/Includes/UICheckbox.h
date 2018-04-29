@@ -44,6 +44,7 @@ public:
 	bool GetRoundedCorners() { return this->RoundedCorners; }
 	float GetRoundCornersRadiusX() { return this->roundCornerRadiusX; }
 	float GetRoundCornersRadiusY() { return this->roundCornerRadiusY; }
+	float GetAlphaComponent() { return this->a; }
 
 	// Setters
 	void SetText(std::wstring text) { this->Text = text; }
@@ -71,6 +72,34 @@ public:
 	}
 	void SetRoundedCorners(bool state) { this->RoundedCorners = state; }
 	void SetRoundedCornersRadii(float radX, float radY) { this->roundCornerRadiusX = radX; this->roundCornerRadiusY = radY; }
+	void FadeOut(int animationDelay)
+	{
+		std::thread t([this, animationDelay] {
+			for (float i = a * 100; i >= 0; i--)
+			{
+				Sleep(animationDelay);
+				a = i / 100;
+				this->normalAlpha = a;
+				this->aText = a;
+			}
+			this->Visible = false;
+		});
+		t.detach();
+	}
+	void FadeIn(int animationDelay, float finalAlpha)
+	{
+		std::thread t([this, animationDelay, finalAlpha] {
+			this->Visible = true;
+			for (float i = a; i <= finalAlpha; i += 0.01f)
+			{
+				Sleep(animationDelay);
+				a = i;
+				this->normalAlpha = a;
+				this->aText = a;
+			}
+		});
+		t.detach();
+	}
 
 	// Setters for Event Handlers
 	typedef void(*callback_function)(UIElement* sender);

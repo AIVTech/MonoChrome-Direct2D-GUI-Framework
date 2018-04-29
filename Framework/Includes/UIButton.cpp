@@ -5,13 +5,13 @@
 void Mouse_HoverOn(UIElement* sender)
 {
 	UIButton* btn = static_cast<UIButton*>(sender);
-	btn->SetRGBAColor(0.5f, 0.5f, 0.5f, 1.0f);
+	btn->SetRGBAColor(0.5f, 0.5f, 0.5f, btn->GetAlphaComponent());
 }
 
 void Mouse_HoverOff(UIElement* sender)
 {
 	UIButton* btn = static_cast<UIButton*>(sender);
-	btn->SetRGBAColor(0.7f, 0.7f, 0.7f, 1.0f);
+	btn->SetRGBAColor(0.7f, 0.7f, 0.7f, btn->GetAlphaComponent());
 }
 
 // Default Constructor

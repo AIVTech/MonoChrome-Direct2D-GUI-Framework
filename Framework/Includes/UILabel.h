@@ -39,6 +39,7 @@ public:
 	bool GetFilled() { return this->Filled; }
 	bool GetVisible() { return this->Visible; }
 	bool GetEnabled() { return true; }
+	float GetAlphaComponent() { return this->a; }
 	
 
 	// Setters
@@ -54,7 +55,32 @@ public:
 	void SetHeight(float height) { this->Height = height; }
 	void SetFilled(bool state) { this->Filled = state; }
 	void SetVisible(bool state) { this->Visible = state; }
-
+	void FadeOut(int animationDelay)
+	{
+		std::thread t([this, animationDelay] {
+			for (float i = a * 100; i >= 0; i--)
+			{
+				Sleep(animationDelay);
+				a = i / 100;
+				this->aText = a;
+			}
+			this->Visible = false;
+		});
+		t.detach();
+	}
+	void FadeIn(int animationDelay, float finalAlpha)
+	{
+		std::thread t([this, animationDelay, finalAlpha] {
+			this->Visible = true;
+			for (float i = a; i <= finalAlpha; i += 0.01f)
+			{
+				Sleep(animationDelay);
+				a = i;
+				this->aText = a;
+			}
+		});
+		t.detach();
+	}
 
 	virtual ~UILabel();
 
@@ -64,7 +90,7 @@ private:
 	std::wstring FontName = std::wstring(L"Arial");
 	int FontSize = 10;
 	float xPos = 0, yPos = 0, Width = 0, Height = 0;
-	float r = 0.0f, g = 0.0f, b = 0.0f, a = 0.0f;
+	float r = 0.0f, g = 0.0f, b = 0.0f, a = 1.0f;
 	float rText = 0.0f, gText = 0.0f, bText = 0.0f, aText = 1.0f;
 	float Stroke = 1.0f;
 	float Margins = 0.1f;

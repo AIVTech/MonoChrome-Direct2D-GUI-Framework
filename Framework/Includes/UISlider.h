@@ -31,6 +31,7 @@ public:
 	float GetKnobPosX() { return knobPosX; }
 	bool GetVisible() { return Visible; }
 	bool GetEnabled() { return Enabled; }
+	float GetAlphaComponent() { return this->a; }
 	
 
 	// Setters
@@ -58,6 +59,34 @@ public:
 			a = 0.14f;
 			knobColorA = 0.14f;
 		}
+	}
+	void FadeOut(int animationDelay)
+	{
+		std::thread t([this, animationDelay] {
+			for (float i = a * 100; i >= 0; i--)
+			{
+				Sleep(animationDelay);
+				a = i / 100;
+				this->normalAlpha = a;
+				this->knobColorA = a;
+			}
+			this->Visible = false;
+		});
+		t.detach();
+	}
+	void FadeIn(int animationDelay, float finalAlpha)
+	{
+		std::thread t([this, animationDelay, finalAlpha] {
+			this->Visible = true;
+			for (float i = a; i <= finalAlpha; i += 0.01f)
+			{
+				Sleep(animationDelay);
+				a = i;
+				this->normalAlpha = a;
+				this->knobColorA = a;
+			}
+		});
+		t.detach();
 	}
 
 	// Event Handlers

@@ -27,7 +27,7 @@ void UITextboxStateHandler::StartListener()
 	while (true)
 	{
 		float lim = CalculateVisibleTextLimit((int)srcTextBox->GetFontSize());
-		srcTextBox->SetVisibleTextLimit(lim);
+		srcTextBox->SetVisibleTextLimit((int)lim);
 		Sleep(4);
 		if (srcTextBox->GetVisible() && srcTextBox->GetEnabled())
 		{

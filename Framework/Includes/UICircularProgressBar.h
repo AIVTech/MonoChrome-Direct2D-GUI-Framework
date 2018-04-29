@@ -27,6 +27,7 @@ public:
 	float GetMinValue() { return this->MinValue; }
 	float GetMaxValue() { return this->MaxValue; }
 	float GetInterval() { return this->Interval; }
+	float GetAlphaComponent() { return this->a; }
 
 	// Setters
 	void SetWidth(float width) { this->Width = width; }
@@ -55,6 +56,34 @@ public:
 	void SetMinValue(float value) { this->MinValue = value; }
 	void SetMaxValue(float value) { this->MaxValue = value; }
 	void SetInterval(float value) { this->Interval = value; }
+	void FadeOut(int animationDelay)
+	{
+		std::thread t([this, animationDelay] {
+			for (float i = a * 100; i >= 0; i--)
+			{
+				Sleep(animationDelay);
+				a = i / 100;
+				this->normalAlpha = a;
+				this->progressA = a;
+			}
+			this->Visible = false;
+		});
+		t.detach();
+	}
+	void FadeIn(int animationDelay, float finalAlpha)
+	{
+		std::thread t([this, animationDelay, finalAlpha] {
+			this->Visible = true;
+			for (float i = a; i <= finalAlpha; i += 0.01f)
+			{
+				Sleep(animationDelay);
+				a = i;
+				this->normalAlpha = a;
+				this->progressA = a;
+			}
+		});
+		t.detach();
+	}
 
 	~UICircularProgressBar();
 private:
