@@ -17,13 +17,13 @@ public:
 	UIButton(Graphics* g, std::wstring text, std::wstring fontName, int FontSize);
 	UIButton(Graphics* g, std::wstring text, std::wstring fontName, int FontSize, float xPos, float yPos, float Width, float Height);
 	UIButton(Graphics* graphics, std::wstring text, std::wstring fontName,
-		int FontSize, float xPos, float yPos, float Width, float Height, float r, float g, float b, float a);
+		int FontSize, float xPos, float yPos, float Width, float Height, Color* color);
 
 	UIButton(Graphics* graphics, std::wstring text, std::wstring fontName,
-		int FontSize, float xPos, float yPos, float Width, float Height, float r, float g, float b, float a, float stroke);
+		int FontSize, float xPos, float yPos, float Width, float Height, Color* color, float stroke);
 
 	UIButton(Graphics* graphics, std::wstring text, std::wstring fontName,
-		int FontSize, float xPos, float yPos, float Width, float Height, float r, float g, float b, float a, float stroke, float margins);
+		int FontSize, float xPos, float yPos, float Width, float Height, Color* color, float stroke, float margins);
 
 	void Draw();
 
@@ -38,7 +38,8 @@ public:
 	float GetHeight() { return this->Height; }
 	float GetStroke() { return this->Stroke; }
 	float GetMargins() { return this->Margins; }
-	float GetAlphaComponent() { return this->a; }
+	Color* GetColor() { return this->color; }
+	Color* GetTextColor() { return this->textColor; }
 	bool GetFilled() { return this->Filled; }
 	bool GetVisible() { return this->Visible; }
 	bool GetEnabled() { return this->Enabled; }
@@ -51,8 +52,8 @@ public:
 	void SetFontName(std::wstring fontName) { this->Text = fontName; }
 	void SetFontSize(int size) { this->FontSize = size; }
 	void SetPosition(float x, float y) { this->xPos = x; this->yPos = y; }
-	void SetRGBAColor(float r, float g, float b, float a) { this->r = r; this->g = g; this->b = b; this->a = a; this->normalAlpha = a; }
-	void SetTextRGBAColor(float r, float g, float b, float a) { this->rText = r; this->gText = g; this->bText = b; this->aText = a; }
+	void SetColor(Color* color) { this->color = color; this->normalAlpha = color->a; }
+	void SetTextColor(Color* color) { this->textColor = color; }
 	void SetStroke(float stroke) { this->Stroke = stroke; }
 	void SetMargins(float size) { this->Margins = size; }
 	void SetWidth(float width) { this->Width = width; }
@@ -64,13 +65,13 @@ public:
 		this->Enabled = state;
 		if (state)
 		{
-			a = normalAlpha;
-			borderA = normalAlpha;
+			color->a = normalAlpha;
+			borderColor->a = normalAlpha;
 		}
 		else
 		{
-			a = 0.14f;
-			borderA = 0.14f;
+			color->a = 0.14f;
+			borderColor->a = 0.14f;
 		}
 	}
 	void SetRoundedCorners(bool state) { this->RoundedCorners = state; }
@@ -78,13 +79,13 @@ public:
 	void FadeOut(int animationDelay)
 	{
 		std::thread t([this, animationDelay] {
-			for (float i = a * 100; i >= 0; i--)
+			for (float i = color->a * 100; i >= 0; i--)
 			{
 				Sleep(animationDelay);
-				a = i / 100;
-				this->normalAlpha = a;
-				this->aText = a;
-				this->borderA = a;
+				color->a = i / 100;
+				this->normalAlpha = color->a;
+				this->textColor->a = color->a;
+				this->borderColor->a = color->a;
 			}
 			this->Visible = false;
 		});
@@ -94,13 +95,13 @@ public:
 	{
 		std::thread t([this, animationDelay, finalAlpha] {
 			this->Visible = true;
-			for (float i = a; i <= finalAlpha; i += 0.01f)
+			for (float i = color->a; i <= finalAlpha; i += 0.01f)
 			{
 				Sleep(animationDelay);
-				a = i;
-				this->normalAlpha = a;
-				this->aText = a;
-				this->borderA = a;
+				color->a = i;
+				this->normalAlpha = color->a;
+				this->textColor->a = color->a;
+				this->borderColor->a = color->a;
 			}
 		});
 		t.detach();
@@ -119,9 +120,11 @@ private:
 	std::wstring FontName = std::wstring(L"Arial");
 	int FontSize = 10;
 	float xPos = 0, yPos = 0, Width = 0, Height = 0;
-	float r = 0.7f, g = 0.7f, b = 0.7f, a = 1.0f, normalAlpha = a;
-	float rText = 0.0f, gText = 0.0f, bText = 0.0f, aText = 1.0f;
-	float borderR = 0.2f, borderG = 0.2f, borderB = 0.2f, borderA = 1.0f, borderStroke = 2.0f;
+	Color* color = new Color(0.7f, 0.7f, 0.7f, 1.0f);
+	float normalAlpha = color->a;
+	Color* textColor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+	Color* borderColor = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+	float borderStroke = 2.0f;
 	float Stroke = 1.0f;
 	float Margins = 0.1f;
 	bool Filled = true;

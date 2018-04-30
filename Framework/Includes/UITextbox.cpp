@@ -56,7 +56,7 @@ UITextbox::UITextbox(Graphics* graphics, std::wstring text, std::wstring fontNam
 }
 
 UITextbox::UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY,
-	float Width, float Height, float r, float g, float b, float a)
+	float Width, float Height, Color* color)
 {
 	this->graphics = graphics;
 	this->Text = text;
@@ -66,16 +66,13 @@ UITextbox::UITextbox(Graphics* graphics, std::wstring text, std::wstring fontNam
 	this->yPos = posY;
 	this->Width = Width;
 	this->Height = Height;
-	this->r = r;
-	this->g = g;
-	this->b = b;
-	this->a = a;
-	this->normalAlpha = a;
+	this->color = color;
+	this->normalAlpha = color->a;
 	SetTextboxStateHandler();
 }
 
 UITextbox::UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY,
-	float Width, float Height, float r, float g, float b, float a, float stroke)
+	float Width, float Height, Color* color, float stroke)
 {
 	this->graphics = graphics;
 	this->Text = text;
@@ -85,11 +82,8 @@ UITextbox::UITextbox(Graphics* graphics, std::wstring text, std::wstring fontNam
 	this->yPos = posY;
 	this->Width = Width;
 	this->Height = Height;
-	this->r = r;
-	this->g = g;
-	this->b = b;
-	this->a = a;
-	this->normalAlpha = a;
+	this->color = color;
+	this->normalAlpha = color->a;
 	this->Stroke = stroke;
 	SetTextboxStateHandler();
 }
@@ -101,9 +95,9 @@ UITextbox::~UITextbox()
 void UITextbox::Draw()
 {
 
-	this->graphics->DrawRectangle(xPos, yPos, Width, Height, r, g, b, a, Stroke, Filled); // Actual Textbox.
+	this->graphics->DrawRectangle(xPos, yPos, Width, Height, color->r, color->g, color->b, color->a, Stroke, Filled); // Actual Textbox.
 	this->graphics->DrawRectangle(xPos - 0.2f, yPos - 0.2f, Width + 0.2f, Height + 0.2f,
-		borderR, borderG, borderB, borderA, BorderStroke, false); // Bounding box.
+		borderColor->r, borderColor->g, borderColor->b, borderColor->a, BorderStroke, false); // Bounding box.
 
 	std::wstring txt = Text;
 	if (txt.size() > textLimit)
@@ -121,7 +115,7 @@ void UITextbox::Draw()
 		}
 	}
 	this->graphics->drawText(std::wstring(txt), FontName, FontSize,
-		xPos + 0.2f, yPos + 0.2f, Width - 0.2f, Height - 0.2f, rText, gText, bText, aText); // Text.
+		xPos + 0.2f, yPos + 0.2f, Width - 0.2f, Height - 0.2f, textColor->r, textColor->g, textColor->b, textColor->a); // Text.
 }
 
 void UITextbox::SetTextboxStateHandler()

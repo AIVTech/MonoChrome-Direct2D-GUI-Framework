@@ -15,13 +15,13 @@ public:
 	UILabel(Graphics* g, std::wstring text, std::wstring fontName, int FontSize);
 	UILabel(Graphics* g, std::wstring text, std::wstring fontName, int FontSize, float xPos, float yPos, float Width, float Height);
 	UILabel(Graphics* graphics, std::wstring text, std::wstring fontName,
-		int FontSize, float xPos, float yPos, float Width, float Height, float r, float g, float b, float a);
+		int FontSize, float xPos, float yPos, float Width, float Height, Color* color);
 
 	UILabel(Graphics* graphics, std::wstring text, std::wstring fontName,
-		int FontSize, float xPos, float yPos, float Width, float Height, float r, float g, float b, float a, float stroke);
+		int FontSize, float xPos, float yPos, float Width, float Height, Color* color, float stroke);
 
 	UILabel(Graphics* graphics, std::wstring text, std::wstring fontName,
-		int FontSize, float xPos, float yPos, float Width, float Height, float r, float g, float b, float a, float stroke, float margins);
+		int FontSize, float xPos, float yPos, float Width, float Height, Color* color, float stroke, float margins);
 
 	void Draw();
 
@@ -39,7 +39,8 @@ public:
 	bool GetFilled() { return this->Filled; }
 	bool GetVisible() { return this->Visible; }
 	bool GetEnabled() { return true; }
-	float GetAlphaComponent() { return this->a; }
+	Color* GetColor() { return this->color; }
+	Color* GetTextColor() { return this->textColor; }
 	
 
 	// Setters
@@ -47,8 +48,8 @@ public:
 	void SetFontName(std::wstring fontName) { this->Text = fontName; }
 	void SetFontSize(int size) { this->FontSize = size; }
 	void SetPosition(float x, float y) { this->xPos = x; this->yPos = y; }
-	void SetRGBAColor(float r, float g, float b, float a) { this->r = r; this->g = g; this->b = b; this->a = a; }
-	void SetTextRGBAColor(float r, float g, float b, float a) { this->rText = r; this->gText = g; this->bText = b; this->aText = a; }
+	void SetColor(Color* color) { this->color = color; }
+	void SetTextColor(Color* color) { this->textColor = color; }
 	void SetStroke(float stroke) { this->Stroke = stroke; }
 	void SetMargins(float size) { this->Margins = size; }
 	void SetWidth(float width) { this->Width = width; }
@@ -58,11 +59,11 @@ public:
 	void FadeOut(int animationDelay)
 	{
 		std::thread t([this, animationDelay] {
-			for (float i = a * 100; i >= 0; i--)
+			for (float i = color->a * 100; i >= 0; i--)
 			{
 				Sleep(animationDelay);
-				a = i / 100;
-				this->aText = a;
+				color->a = i / 100;
+				this->textColor->a = color->a;
 			}
 			this->Visible = false;
 		});
@@ -72,11 +73,11 @@ public:
 	{
 		std::thread t([this, animationDelay, finalAlpha] {
 			this->Visible = true;
-			for (float i = a; i <= finalAlpha; i += 0.01f)
+			for (float i = color->a; i <= finalAlpha; i += 0.01f)
 			{
 				Sleep(animationDelay);
-				a = i;
-				this->aText = a;
+				color->a = i;
+				this->textColor->a = color->a;
 			}
 		});
 		t.detach();
@@ -90,11 +91,11 @@ private:
 	std::wstring FontName = std::wstring(L"Arial");
 	int FontSize = 10;
 	float xPos = 0, yPos = 0, Width = 0, Height = 0;
-	float r = 0.0f, g = 0.0f, b = 0.0f, a = 1.0f;
-	float rText = 0.0f, gText = 0.0f, bText = 0.0f, aText = 1.0f;
+	Color* color = new Color(0.8f, 0.8f, 0.8f, 1.0f);
+	Color* textColor = new Color_White();
 	float Stroke = 1.0f;
 	float Margins = 0.1f;
-	bool Filled = true;
+	bool Filled = false;
 	bool Visible = true;
 
 	// Entire Label Border

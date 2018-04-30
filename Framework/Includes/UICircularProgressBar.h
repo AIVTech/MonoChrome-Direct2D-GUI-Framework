@@ -27,7 +27,8 @@ public:
 	float GetMinValue() { return this->MinValue; }
 	float GetMaxValue() { return this->MaxValue; }
 	float GetInterval() { return this->Interval; }
-	float GetAlphaComponent() { return this->a; }
+	Color* GetColor() { return this->color; }
+	Color* GetProgressColor() { return this->progressColor; }
 
 	// Setters
 	void SetWidth(float width) { this->Width = width; }
@@ -36,20 +37,20 @@ public:
 	void SetVisible(bool state) { this->Visible = state; }
 	void SetStroke(float stroke) { this->Stroke = stroke; }
 	void SetRadius(float size) { this->Radius = size; UpdateArcEndPoint(); }
-	void SetRGBAColor(float r, float g, float b, float a) { this->r = r; this->g = g; this->b = b; this->a = a; this->normalAlpha = a; }
-	void SetRGBAProgressColor(float r, float g, float b, float a) { this->progressR = r; this->progressG = g; this->progressB = b; this->progressA = a; }
+	void SetColor(Color* color) { this->color = color; this->normalAlpha = color->a; }
+	void SetProgressColor(Color* color) { this->progressColor = color; }
 	void SetEnabled(bool state)
 	{ 
 		this->Enabled = state;
 		if (state)
 		{
-			a = normalAlpha;
-			progressA = normalAlpha;
+			color->a = normalAlpha;
+			progressColor->a = normalAlpha;
 		}
 		else
 		{
-			a = 0.14f;
-			progressA = 0.14f;
+			color->a = 0.14f;
+			progressColor->a = 0.14f;
 		}
 	}
 	void SetValue(float value) { this->Value = value; UpdateArcEndPoint();  }
@@ -59,12 +60,12 @@ public:
 	void FadeOut(int animationDelay)
 	{
 		std::thread t([this, animationDelay] {
-			for (float i = a * 100; i >= 0; i--)
+			for (float i = color->a * 100; i >= 0; i--)
 			{
 				Sleep(animationDelay);
-				a = i / 100;
-				this->normalAlpha = a;
-				this->progressA = a;
+				color->a = i / 100;
+				this->normalAlpha = color->a;
+				this->progressColor->a = color->a;
 			}
 			this->Visible = false;
 		});
@@ -74,12 +75,12 @@ public:
 	{
 		std::thread t([this, animationDelay, finalAlpha] {
 			this->Visible = true;
-			for (float i = a; i <= finalAlpha; i += 0.01f)
+			for (float i = color->a; i <= finalAlpha; i += 0.01f)
 			{
 				Sleep(animationDelay);
-				a = i;
-				this->normalAlpha = a;
-				this->progressA = a;
+				color->a = i;
+				this->normalAlpha = color->a;
+				this->progressColor->a = color->a;
 			}
 		});
 		t.detach();
@@ -94,8 +95,9 @@ private:
 	D2D1_ARC_SIZE arcSize = D2D1_ARC_SIZE_SMALL;
 
 	float xPos = 0, yPos = 0, Width = 0, Height = 0;
-	float r = 4.0f, g = 4.0f, b = 4.0f, a = 1.0f, normalAlpha = a;
-	float progressR = 0.0f, progressG = 1.0f, progressB = 0.0f, progressA = 1.0f;
+	float normalAlpha = 1.0f;
+	Color* color = new Color_Black();
+	Color* progressColor = new Color_LimeGreen();
 	float arcEndPointX = xPos;
 	float arcEndPointY = yPos - Radius;
 	float Stroke = 4.0f;

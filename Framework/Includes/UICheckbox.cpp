@@ -100,14 +100,16 @@ void UICheckbox::Draw()
 {
 	if (!this->RoundedCorners)
 	{
-		graphics->DrawRectangle(xPos, yPos, Size, Size, r, g, b, a, 0, true);
+		graphics->DrawRectangle(xPos, yPos, Size, Size, color->r, color->g, color->b, color->a, 0, true);
 	}
 	else
 	{
-		graphics->DrawRoundedRectangle(xPos, yPos, Size, Size, roundCornerRadiusX, roundCornerRadiusY, r, g, b, a, 0, true);
+		graphics->DrawRoundedRectangle(xPos, yPos, Size, Size, roundCornerRadiusX, roundCornerRadiusY, 
+			color->r, color->g, color->b, color->a, 0, true);
 	}
 
-	graphics->drawText(Text, FontName, FontSize, xPos+Size, yPos-Size/2, TextWidth, TextHeight, rText, gText, bText, aText);
+	graphics->drawText(Text, FontName, FontSize, xPos+Size, yPos-Size/2, TextWidth, TextHeight, 
+		textColor->r, textColor->g, textColor->b, textColor->a);
 
 	if (Checked)
 	{

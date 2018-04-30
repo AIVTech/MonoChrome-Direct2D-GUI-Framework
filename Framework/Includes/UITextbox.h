@@ -15,10 +15,10 @@ public:
 	UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize);
 	UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY);
 	UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY, float Width, float Height);
-	UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY, 
-		float Width, float Height, float r, float g, float b, float a);
 	UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY,
-		float Width, float Height, float r, float g, float b, float a, float stroke);
+		float Width, float Height, Color* color);
+	UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY,
+		float Width, float Height, Color* color, float stroke);
 
 	void Draw();
 
@@ -38,7 +38,9 @@ public:
 	bool GetFocused() { return this->Focused; }
 	int GetVisibleTextLimit() { return this->textLimit; }
 	int GetTextStartIndex() { return this->displayStartIndex; }
-	float GetAlphaComponent() { return this->a; }
+	Color* GetColor() { return this->color; }
+	Color* GetTextColor() { return this->textColor; }
+	Color* GetBorderColor() { return this->borderColor; }
 
 	// Setters
 	void SetText(std::wstring text) { this->previousText.push_back(Text); this->Text = text; }
@@ -47,8 +49,9 @@ public:
 	void SetFontName(std::wstring fontName) { this->Text = fontName; }
 	void SetFontSize(int size) { this->FontSize = (float)size; if (size > 40) this->FontSize = 40.0f; }
 	void SetPosition(float x, float y) { this->xPos = x; this->yPos = y; }
-	void SetRGBAColor(float r, float g, float b, float a) { this->r = r; this->g = g; this->b = b; this->a = a; }
-	void SetTextRGBAColor(float r, float g, float b, float a) { this->rText = r; this->gText = g; this->bText = b; this->aText = a; }
+	void SetColor(Color* color) { this->color = color; this->normalAlpha = color->a; }
+	void SetTextColor(Color* color) { this->textColor = color; }
+	void SetBorderColor(Color* color) { this->borderColor = color; }
 	void SetStroke(float stroke) { this->Stroke = stroke; }
 	void SetBorderStroke(float stroke) { this->BorderStroke = stroke; }
 	void SetVisible(bool state) { this->Visible = state; }
@@ -57,15 +60,15 @@ public:
 		this->Enabled = state;
 		if (state)
 		{
-			a = normalAlpha;
-			aText = normalAlpha;
-			borderA = normalAlpha;
+			color->a = normalAlpha;
+			textColor->a = normalAlpha;
+			borderColor->a = normalAlpha;
 		}
 		else
 		{
-			a = 0.14f;
-			aText = 0.14f;
-			borderA = 0.14f;
+			color->a = 0.14f;
+			textColor->a = 0.14f;
+			borderColor->a = 0.14f;
 		}
 	}
 	void SetWidth(float width) { this->Width = width; }
@@ -75,17 +78,15 @@ public:
 		this->Focused = state;
 		if (state)
 		{
-			borderR = 0.0f;
-			borderG = 0.0f;
-			borderB = 1.0f;
-			borderA = 1.0f;
+			borderColor->r = 0.0f;
+			borderColor->g = 0.0f;
+			borderColor->b = 1.0f;
 		}
 		else
 		{
-			borderR = 0.0f;
-			borderG = 0.0f;
-			borderB = 0.0f;
-			borderA = normalAlpha;
+			borderColor->r = 0.0f;
+			borderColor->g = 0.0f;
+			borderColor->b = 0.0f;
 		}
 	}
 	void UndoTextAction();
@@ -95,13 +96,13 @@ public:
 	void FadeOut(int animationDelay)
 	{
 		std::thread t([this, animationDelay] {
-			for (float i = a * 100; i >= 0; i--)
+			for (float i = color->a * 100; i >= 0; i--)
 			{
 				Sleep(animationDelay);
-				a = i / 100;
-				this->normalAlpha = a;
-				this->aText = a;
-				this->borderA = a;
+				color->a = i / 100;
+				this->normalAlpha = color->a;
+				this->textColor->a = color->a;
+				this->borderColor->a = color->a;
 			}
 			this->Visible = false;
 		});
@@ -111,13 +112,13 @@ public:
 	{
 		std::thread t([this, animationDelay, finalAlpha] {
 			this->Visible = true;
-			for (float i = a; i <= finalAlpha; i += 0.01f)
+			for (float i = color->a; i <= finalAlpha; i += 0.01f)
 			{
 				Sleep(animationDelay);
-				a = i;
-				this->normalAlpha = a;
-				this->aText = a;
-				this->borderA = a;
+				color->a = i;
+				this->normalAlpha = color->a;
+				this->textColor->a = color->a;
+				this->borderColor->a = color->a;
 			}
 		});
 		t.detach();
@@ -134,9 +135,10 @@ private:
 	std::wstring FontName = std::wstring(L"Arial");
 	float FontSize = 10;
 	float xPos = 0.0f, yPos = 0.0f, Width = 0.0f, Height = 0.0f;
-	float r = 1.0f, g = 1.0f, b = 1.0f, a = 1.0f, normalAlpha = a;
-	float rText = 0.0f, gText = 0.0f, bText = 0.0f, aText = 1.0f;
-	float borderR = 0.0f, borderG = 0.0f, borderB = 0.0f, borderA = 1.0f;
+	Color* color = new Color_White();
+	Color* textColor = new Color_Black();
+	Color* borderColor = new Color_Black();
+	float normalAlpha = 1.0f;
 	float Stroke = 1.0f;
 	float BorderStroke = 1.0f;
 	bool Enabled = true;

@@ -42,10 +42,10 @@ UISlider::~UISlider()
 void UISlider::Draw()
 {
 	// draw a bar
-	this->graphics->DrawRectangle(xPos, yPos, Width, Height, r, g, b, a, 2, true);
+	this->graphics->DrawRectangle(xPos, yPos, Width, Height, color->r, color->g, color->b, color->a, 2, true);
 	
 	// draw a slider-knob / handle
-	this->graphics->DrawCircle(knobPosX, yPos, Radius, knobColorR, knobColorG, knobColorB, knobColorA, 1, true);
+	this->graphics->DrawCircle(knobPosX, yPos, Radius, knobColor->r, knobColor->g, knobColor->b, knobColor->a, 1, true);
 }
 
 void UISlider::SetPressedMouseMovedHandler(callback_function func)

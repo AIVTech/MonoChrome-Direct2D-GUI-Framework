@@ -43,11 +43,11 @@ UICircularProgressBar::~UICircularProgressBar()
 
 void UICircularProgressBar::Draw()
 {
-	graphics->DrawCircle(xPos, yPos, Radius, r, g, b, a, Stroke, false);
+	graphics->DrawCircle(xPos, yPos, Radius, color->r, color->g, color->b, color->a, Stroke, false);
 	if (Value > MinValue)
 	{
 		graphics->DrawArc(xPos, yPos - Radius, arcEndPointX, arcEndPointY, Radius,
-			D2D1_SWEEP_DIRECTION_CLOCKWISE, arcSize, progressR, progressG, progressB, progressA, Stroke);
+			D2D1_SWEEP_DIRECTION_CLOCKWISE, arcSize, progressColor->r, progressColor->g, progressColor->b, progressColor->a, Stroke);
 	}
 }
 
@@ -79,14 +79,6 @@ void UICircularProgressBar::UpdateArcEndPoint()
 
 	float xCoord = xPos + sinf(angle) * Radius;
 	float yCoord = yPos - cosf(angle) * Radius;
-
-	/*
-	MessageBoxA(0, std::to_string(xPos).c_str(), "x pos", 0);
-	MessageBoxA(0, std::to_string(xCoord).c_str(), "x coord", 0);
-
-	MessageBoxA(0, std::to_string(yPos).c_str(), "y pos", 0);
-	MessageBoxA(0, std::to_string(yCoord).c_str(), "y coord", 0);
-	*/
 
 	SetArcEndPoint(xCoord, yCoord);
 }

@@ -31,7 +31,8 @@ public:
 	float GetKnobPosX() { return knobPosX; }
 	bool GetVisible() { return Visible; }
 	bool GetEnabled() { return Enabled; }
-	float GetAlphaComponent() { return this->a; }
+	Color* GetColor() { return this->color; }
+	Color* GetKnobColor() { return this->knobColor; }
 	
 
 	// Setters
@@ -39,7 +40,7 @@ public:
 	void SetWidth(float width) { this->Width = width; }
 	void SetKnobRadius(float radius) { this->Radius = radius; }
 	void SetHeight(float height) { this->Height = height; }
-	void SetRGBColor(float r, float g, float b, float a) { this->r = r; this->g = g; this->b = b; this->normalAlpha = 1.0f; }
+	void SetColor(Color* color) { this->color = color; this->normalAlpha = color->a; }
 	void SetMinValue(float val) { this->MinValue = val; }
 	void SetMaxValue(float val) { this->MaxValue = val; }
 	void SetValue(float val) { this->currentValue = val; }
@@ -51,24 +52,24 @@ public:
 		this->Enabled = state; 
 		if (state)
 		{
-			a = normalAlpha;
-			knobColorA = normalAlpha;
+			color->a = normalAlpha;
+			knobColor->a = normalAlpha;
 		}
 		else
 		{
-			a = 0.14f;
-			knobColorA = 0.14f;
+			color->a = 0.14f;
+			knobColor->a = 0.14f;
 		}
 	}
 	void FadeOut(int animationDelay)
 	{
 		std::thread t([this, animationDelay] {
-			for (float i = a * 100; i >= 0; i--)
+			for (float i = color->a * 100; i >= 0; i--)
 			{
 				Sleep(animationDelay);
-				a = i / 100;
-				this->normalAlpha = a;
-				this->knobColorA = a;
+				color->a = i / 100;
+				this->normalAlpha = color->a;
+				this->knobColor->a = color->a;
 			}
 			this->Visible = false;
 		});
@@ -78,12 +79,12 @@ public:
 	{
 		std::thread t([this, animationDelay, finalAlpha] {
 			this->Visible = true;
-			for (float i = a; i <= finalAlpha; i += 0.01f)
+			for (float i = color->a; i <= finalAlpha; i += 0.01f)
 			{
 				Sleep(animationDelay);
-				a = i;
-				this->normalAlpha = a;
-				this->knobColorA = a;
+				color->a = i;
+				this->normalAlpha = color->a;
+				this->knobColor->a = color->a;
 			}
 		});
 		t.detach();
@@ -97,7 +98,8 @@ public:
 private:
 	Graphics* graphics;
 	float xPos = 0, yPos = 0, Width = 120;
-	float r = 0.2f, g = 0.2f, b = 0.2f, a = 1.0f, normalAlpha = a;
+	float normalAlpha = 1.0f;
+	Color* color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
 	float Height = 4;
 	float MinValue = 0, MaxValue = 100, Intervals = 10;
 	float currentValue = MinValue;
@@ -106,7 +108,7 @@ private:
 
 	// some slider-knob attributes
 	float knobPosX = xPos + currentValue;
-	float knobColorR = 1.0f, knobColorG = 1.0f, knobColorB = 1.0f, knobColorA = 1.0f;
+	Color* knobColor = new Color_White();
 	float Radius = Height*2;
 
 	// Event Handler

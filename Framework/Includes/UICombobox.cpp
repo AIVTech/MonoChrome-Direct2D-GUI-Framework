@@ -27,18 +27,15 @@ UICombobox::UICombobox(Graphics* graphics, float xPos, float yPos, float Width, 
 	SetItemSelectionHandler();
 }
 
-UICombobox::UICombobox(Graphics* graphics, float xPos, float yPos, float Width, float Height, float r, float g, float b, float a)
+UICombobox::UICombobox(Graphics* graphics, float xPos, float yPos, float Width, float Height, Color* color)
 {
 	this->graphics = graphics;
 	this->xPos = xPos;
 	this->yPos = yPos;
 	this->Width = Width;
 	this->Height = Height;
-	this->r = r;
-	this->g = g;
-	this->b = b;
-	this->a = a;
-	this->normalAlpha = a;
+	this->color = color;
+	this->normalAlpha = color->a;
 	SetMouseClickedHandler(Mouse_OnClick);
 	SetItemSelectionHandler();
 }
@@ -52,13 +49,15 @@ void UICombobox::Draw()
 {
 	if (!RoundedCorners)
 	{
-		this->graphics->DrawRectangle(xPos, yPos, Width, Height, r, g, b, a, 0, true); // Actual combobox
+		this->graphics->DrawRectangle(xPos, yPos, Width, Height, color->r, color->g, color->b, color->a, 0, true); // Actual combobox
 		this->graphics->DrawRectangle(xPos - 0.1f, yPos - 0.1f,
 			Width + 0.1f, Height + 0.1f, 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, false); // Border box
 	}
 	else
 	{
-		this->graphics->DrawRoundedRectangle(xPos, yPos, Width, Height, roundCornerRadiusX, roundCornerRadiusY, r, g, b, a, 0, true); // Actual combobox
+		this->graphics->DrawRoundedRectangle(xPos, yPos, Width, Height, 
+			roundCornerRadiusX, roundCornerRadiusY, color->r, color->g, color->b, color->a, 0, true); // Actual combobox
+
 		this->graphics->DrawRoundedRectangle(xPos - 0.1f, yPos - 0.1f, Width + 0.1f, Height + 0.1f, 
 			roundCornerRadiusX, roundCornerRadiusY, 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, false); // Border Box
 	}
@@ -74,7 +73,7 @@ void UICombobox::Draw()
 		{
 			for (int i = 1; i < Items.size(); i++)
 			{
-				float red = r, green = g, blue = b, textRed = 0.0f, textGreen = 0.0f, textBlue = 0.0f;
+				float red = color->r, green = color->g, blue = color->b, textRed = 0.0f, textGreen = 0.0f, textBlue = 0.0f;
 				if (i == hoverIndex)
 				{
 					red = 0.0f;
@@ -88,7 +87,7 @@ void UICombobox::Draw()
 
 				float y = yPos + Height*i;
 				float w = Width - 14.0f;
-				this->graphics->DrawRectangle(xPos, y, w, Height, red, green, blue, a, 0, true); // Actual combobox
+				this->graphics->DrawRectangle(xPos, y, w, Height, red, green, blue, color->a, 0, true); // Actual combobox
 				this->graphics->DrawRectangle(xPos - 0.1f, y,
 					w + 0.1f, Height + 0.1f, 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, false); // Border box
 

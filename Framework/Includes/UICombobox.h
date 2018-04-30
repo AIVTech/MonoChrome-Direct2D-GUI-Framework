@@ -16,7 +16,7 @@ public:
 
 	UICombobox(Graphics* graphics);
 	UICombobox(Graphics* graphics, float xPos, float yPos, float Width, float Height);
-	UICombobox(Graphics* graphics, float xPos, float yPos, float Width, float Height, float r, float g, float b, float a);
+	UICombobox(Graphics* graphics, float xPos, float yPos, float Width, float Height, Color* color);
 
 	void Draw();
 
@@ -35,7 +35,7 @@ public:
 	bool GetRoundedCorners() { return this->RoundedCorners; }
 	float GetRoundCornersRadiusX() { return this->roundCornerRadiusX; }
 	float GetRoundCornersRadiusY() { return this->roundCornerRadiusY; }
-	float GetAlphaComponent() { return this->a; }
+	Color* GetColor() { return this->color; }
 
 	// Setters
 	void SetPosition(float x, float y) { this->xPos = x; this->yPos = y; }
@@ -47,14 +47,14 @@ public:
 		this->Enabled = state;
 		if (state)
 		{
-			a = normalAlpha;
+			color->a = normalAlpha;
 		}
 		else
 		{
-			a = 0.14f;
+			color->a = 0.14f;
 		}
 	}
-	void SetRGBAColor(float r, float g, float b, float a) { this->r = r; this->g = g; this->b = b; this->a = a; }
+	void SetColor(Color* color) { this->color = color; }
 	void SetItems(std::vector<std::wstring> items) { this->Items = items; }
 	void SetDrawItems(bool state) { this->drawItems = state; }
 	void SetSelectedIndex(int index) { this->SelectedIndex = index; }
@@ -64,11 +64,11 @@ public:
 	void FadeOut(int animationDelay)
 	{
 		std::thread t([this, animationDelay] {
-			for (float i = a * 100; i >= 0; i--)
+			for (float i = color->a * 100; i >= 0; i--)
 			{
 				Sleep(animationDelay);
-				a = i / 100;
-				this->normalAlpha = a;
+				color->a = i / 100;
+				this->normalAlpha = color->a;
 			}
 			this->Visible = false;
 		});
@@ -78,11 +78,11 @@ public:
 	{
 		std::thread t([this, animationDelay, finalAlpha] {
 			this->Visible = true;
-			for (float i = a; i <= finalAlpha; i += 0.01f)
+			for (float i = color->a; i <= finalAlpha; i += 0.01f)
 			{
 				Sleep(animationDelay);
-				a = i;
-				this->normalAlpha = a;
+				color->a = i;
+				this->normalAlpha = color->a;
 			}
 		});
 		t.detach();
@@ -102,7 +102,8 @@ public:
 private:
 	Graphics* graphics;
 	float xPos = 0, yPos = 0, Width = 0, Height = 0;
-	float r = 1.0f, g = 1.0f, b = 1.0f, a = 1.0f, normalAlpha = a;
+	float normalAlpha = 1.0f;
+	Color* color = new Color_White();
 	bool Visible = true;
 	bool Enabled = true;
 	std::vector<std::wstring> Items = { L" " };

@@ -2,6 +2,7 @@
 #define UIELEMENT_H
 
 #include "Graphics.h"
+#include "Color.h"
 #include <thread>
 
 class UIElement 
@@ -15,7 +16,7 @@ public:
 	virtual float GetPosY() = 0;
 	virtual float GetWidth() = 0;
 	virtual float GetHeight() = 0;
-	virtual float GetAlphaComponent() = 0;
+	virtual Color* GetColor() = 0;
 	virtual bool GetVisible() = 0;
 	virtual void SetVisible(bool state) = 0;
 	virtual bool GetEnabled() = 0;

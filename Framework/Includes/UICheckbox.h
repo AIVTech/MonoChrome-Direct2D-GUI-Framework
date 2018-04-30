@@ -44,14 +44,16 @@ public:
 	bool GetRoundedCorners() { return this->RoundedCorners; }
 	float GetRoundCornersRadiusX() { return this->roundCornerRadiusX; }
 	float GetRoundCornersRadiusY() { return this->roundCornerRadiusY; }
-	float GetAlphaComponent() { return this->a; }
+	Color* GetColor() { return this->color; }
+	Color* GetTextColor() { return this->textColor; }
 
 	// Setters
 	void SetText(std::wstring text) { this->Text = text; }
 	void SetFontName(std::wstring fontName) { this->Text = fontName; }
 	void SetFontSize(int size) { this->FontSize = size; }
 	void SetPosition(float x, float y) { this->xPos = x; this->yPos = y; }
-	void SetTextRGBAColor(float r, float g, float b, float a) { this->rText = r; this->gText = g; this->bText = b; this->aText = a; this->normalAlpha = a; }
+	void SetColor(Color* color) { this->color = color; this->normalAlpha = color->a; }
+	void SetTextColor(Color* color) { this->textColor = color; }
 	void SetMargins(float size) { this->Margins = size; }
 	void SetSize(float size) { this->Size = size; }
 	void SetTextWidth(float w) { this->TextWidth = w; }
@@ -63,11 +65,13 @@ public:
 		this->Enabled = state;
 		if (state)
 		{
-			a = normalAlpha;
+			color->a = normalAlpha;
+			textColor->a = normalAlpha;
 		}
 		else
 		{
-			a = 0.14f;
+			color->a = 0.14f;
+			textColor->a = 0.14f;
 		}
 	}
 	void SetRoundedCorners(bool state) { this->RoundedCorners = state; }
@@ -75,12 +79,12 @@ public:
 	void FadeOut(int animationDelay)
 	{
 		std::thread t([this, animationDelay] {
-			for (float i = a * 100; i >= 0; i--)
+			for (float i = color->a * 100; i >= 0; i--)
 			{
 				Sleep(animationDelay);
-				a = i / 100;
-				this->normalAlpha = a;
-				this->aText = a;
+				color->a = i / 100;
+				this->normalAlpha = color->a;
+				this->textColor->a = color->a;
 			}
 			this->Visible = false;
 		});
@@ -90,12 +94,12 @@ public:
 	{
 		std::thread t([this, animationDelay, finalAlpha] {
 			this->Visible = true;
-			for (float i = a; i <= finalAlpha; i += 0.01f)
+			for (float i = color->a; i <= finalAlpha; i += 0.01f)
 			{
 				Sleep(animationDelay);
-				a = i;
-				this->normalAlpha = a;
-				this->aText = a;
+				color->a = i;
+				this->normalAlpha = color->a;
+				this->textColor->a = color->a;
 			}
 		});
 		t.detach();
@@ -113,7 +117,9 @@ private:
 	std::wstring FontName = std::wstring(L"Arial");
 	int FontSize = 10;
 	float xPos = 0, yPos = 0, Size = 0, TextWidth = 0, TextHeight = 0;
-	float r = 1.0f, g = 1.0f, b = 1.0f, a = 1.0f, rText = 0.0f, gText = 0.0f, bText = 0.0f, aText = 1.0f, normalAlpha = 1.0f;
+	Color* color = new Color_White();
+	Color* textColor = new Color_Black();
+	float normalAlpha = 1.0f;
 	float Margins = 1.0f;
 	bool Visible = true;
 	bool Enabled = true;
