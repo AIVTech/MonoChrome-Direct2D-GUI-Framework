@@ -11,24 +11,24 @@ class EventHandler;
 class UIButton : public UIElement
 {
 public:
-	UIButton(Graphics* g);
-	UIButton(Graphics* g, std::wstring text);
-	UIButton(Graphics* g, std::wstring text, std::wstring fontName);
-	UIButton(Graphics* g, std::wstring text, std::wstring fontName, int FontSize);
-	UIButton(Graphics* g, std::wstring text, std::wstring fontName, int FontSize, float xPos, float yPos, float Width, float Height);
-	UIButton(Graphics* graphics, std::wstring text, std::wstring fontName,
+	UIButton(UIWindow* srcWindow);
+	UIButton(UIWindow* srcWindow, std::wstring text);
+	UIButton(UIWindow* srcWindow, std::wstring text, std::wstring fontName);
+	UIButton(UIWindow* srcWindow, std::wstring text, std::wstring fontName, int FontSize);
+	UIButton(UIWindow* srcWindow, std::wstring text, std::wstring fontName, int FontSize, float xPos, float yPos, float Width, float Height);
+	UIButton(UIWindow* srcWindow, std::wstring text, std::wstring fontName,
 		int FontSize, float xPos, float yPos, float Width, float Height, Color* color);
 
-	UIButton(Graphics* graphics, std::wstring text, std::wstring fontName,
+	UIButton(UIWindow* srcWindow, std::wstring text, std::wstring fontName,
 		int FontSize, float xPos, float yPos, float Width, float Height, Color* color, float stroke);
 
-	UIButton(Graphics* graphics, std::wstring text, std::wstring fontName,
+	UIButton(UIWindow* srcWindow, std::wstring text, std::wstring fontName,
 		int FontSize, float xPos, float yPos, float Width, float Height, Color* color, float stroke, float margins);
 
 	void Draw();
 
 	// Getters
-	Graphics* GetGraphics() { return this->graphics; }
+	UIWindow* GetSourceWindow() { return this->srcWindow; }
 	std::wstring GetText() { return this->Text; }
 	std::wstring GetFontName() { return this->FontName; }
 	int GetFontSize() { return this->FontSize; }
@@ -70,35 +70,40 @@ public:
 		}
 		else
 		{
-			color->a = 0.14f;
-			borderColor->a = 0.14f;
+			color->a = 36;
+			borderColor->a = 36;
 		}
 	}
 	void SetRoundedCorners(bool state) { this->RoundedCorners = state; }
 	void SetRoundedCornersRadii(float radX, float radY) { this->roundCornerRadiusX = radX; this->roundCornerRadiusY = radY; }
-	void FadeOut(int animationDelay)
+	void FadeOut(int animationDelay, int decrementValue)
 	{
-		std::thread t([this, animationDelay] {
-			for (float i = color->a * 100; i >= 0; i--)
+		std::thread t([this, animationDelay, decrementValue] {
+			for (int i = color->a; i >= 1; i -= decrementValue)
 			{
 				Sleep(animationDelay);
-				color->a = i / 100;
+				uint8_t val = (uint8_t)i;
+				color->a = val;
 				this->normalAlpha = color->a;
 				this->textColor->a = color->a;
 				this->borderColor->a = color->a;
 			}
 			this->Visible = false;
+			return;
 		});
 		t.detach();
 	}
-	void FadeIn(int animationDelay, float finalAlpha)
+	void FadeIn(int animationDelay, int incrementValue, int finalAlpha)
 	{
-		std::thread t([this, animationDelay, finalAlpha] {
+		if (finalAlpha >= 255)
+			finalAlpha = 254;
+		std::thread t([this, animationDelay, incrementValue, finalAlpha] {
 			this->Visible = true;
-			for (float i = color->a; i <= finalAlpha; i += 0.01f)
+			for (int i = color->a; i <= finalAlpha; i += incrementValue)
 			{
 				Sleep(animationDelay);
-				color->a = i;
+				uint8_t val = (uint8_t)i;
+				color->a = val;
 				this->normalAlpha = color->a;
 				this->textColor->a = color->a;
 				this->borderColor->a = color->a;
@@ -106,7 +111,6 @@ public:
 		});
 		t.detach();
 	}
-
 
 	// Setters for Event Handlers
 	typedef void(*callback_function)(UIElement* sender);
@@ -115,15 +119,15 @@ public:
 	virtual ~UIButton();
 
 private:
-	Graphics* graphics;
+	UIWindow* srcWindow;
 	std::wstring Text = std::wstring(L"");
 	std::wstring FontName = std::wstring(L"Arial");
 	int FontSize = 10;
 	float xPos = 0, yPos = 0, Width = 0, Height = 0;
-	Color* color = new Color(0.7f, 0.7f, 0.7f, 1.0f);
-	float normalAlpha = color->a;
-	Color* textColor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-	Color* borderColor = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+	Color* color = new Color(140, 140, 140, 255);
+	uint8_t normalAlpha = color->a;
+	Color* textColor = new Color_Black();
+	Color* borderColor = new Color(40, 40, 40, 255);
 	float borderStroke = 2.0f;
 	float Stroke = 1.0f;
 	float Margins = 0.1f;

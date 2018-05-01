@@ -32,15 +32,22 @@ bool Graphics::Init(HWND hWnd)
 	return true;
 }
 
-void Graphics::ClearScreen(float r, float g, float b)
+void Graphics::ClearScreen(uint8_t r, uint8_t g, uint8_t b)
 {
-	RenderTarget->Clear(D2D1::ColorF(r, g, b));
+	float red = ConvertUI8ToFloat(r);
+	float green = ConvertUI8ToFloat(g);
+	float blue = ConvertUI8ToFloat(b);
+	RenderTarget->Clear(D2D1::ColorF(red, green, blue));
 }
 
-void Graphics::DrawCircle(float x, float y, float radius, float r, float g, float b, float a, float stroke, bool filled)
+void Graphics::DrawCircle(float x, float y, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float stroke, bool filled)
 {
+	float red = ConvertUI8ToFloat(r);
+	float green = ConvertUI8ToFloat(g);
+	float blue = ConvertUI8ToFloat(b);
+	float alpha = ConvertUI8ToFloat(a);
 	ID2D1SolidColorBrush* brush;
-	RenderTarget->CreateSolidColorBrush(D2D1::ColorF(r, g, b, a), &brush);
+	RenderTarget->CreateSolidColorBrush(D2D1::ColorF(red, green, blue, alpha), &brush);
 
 	if (filled)
 	{
@@ -52,10 +59,14 @@ void Graphics::DrawCircle(float x, float y, float radius, float r, float g, floa
 	}
 }
 
-void Graphics::DrawRectangle(float x, float y, float width, float height, float r, float g, float b, float a, float stroke, bool filled)
+void Graphics::DrawRectangle(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float stroke, bool filled)
 {
+	float red = ConvertUI8ToFloat(r);
+	float green = ConvertUI8ToFloat(g);
+	float blue = ConvertUI8ToFloat(b);
+	float alpha = ConvertUI8ToFloat(a);
 	ID2D1SolidColorBrush* brush;
-	RenderTarget->CreateSolidColorBrush(D2D1::ColorF(r, g, b, a), &brush);
+	RenderTarget->CreateSolidColorBrush(D2D1::ColorF(red, green, blue, alpha), &brush);
 
 	D2D1_RECT_F rectangle = D2D1::RectF(x, y, x + width, y + height);
 
@@ -69,10 +80,15 @@ void Graphics::DrawRectangle(float x, float y, float width, float height, float 
 	}
 }
 
-void Graphics::DrawRoundedRectangle(float x, float y, float width, float height, float radiusX, float radiusY, float r, float g, float b, float a, float stroke, bool filled)
+void Graphics::DrawRoundedRectangle(float x, float y, float width, float height, 
+	float radiusX, float radiusY, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float stroke, bool filled)
 {
+	float red = ConvertUI8ToFloat(r);
+	float green = ConvertUI8ToFloat(g);
+	float blue = ConvertUI8ToFloat(b);
+	float alpha = ConvertUI8ToFloat(a);
 	ID2D1SolidColorBrush* brush;
-	RenderTarget->CreateSolidColorBrush(D2D1::ColorF(r, g, b, a), &brush);
+	RenderTarget->CreateSolidColorBrush(D2D1::ColorF(red, green, blue, alpha), &brush);
 
 	D2D1_RECT_F rectangle = D2D1::RectF(x, y, x + width, y + height);
 	D2D1_ROUNDED_RECT roundedRectangle = D2D1::RoundedRect(rectangle, radiusX, radiusY);
@@ -88,10 +104,14 @@ void Graphics::DrawRoundedRectangle(float x, float y, float width, float height,
 }
 
 void Graphics::drawText(const std::wstring& text, std::wstring font, WCHAR fontSize, 
-	float xPos, float yPos, float width, float height, float r, float g, float b, float a)
+	float xPos, float yPos, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
+	float red = ConvertUI8ToFloat(r);
+	float green = ConvertUI8ToFloat(g);
+	float blue = ConvertUI8ToFloat(b);
+	float alpha = ConvertUI8ToFloat(a);
 	ID2D1SolidColorBrush* brush;
-	RenderTarget->CreateSolidColorBrush(D2D1::ColorF(r, g, b, a), &brush);
+	RenderTarget->CreateSolidColorBrush(D2D1::ColorF(red, green, blue, alpha), &brush);
 
 	IDWriteFactory* WriteFactory;
 	HRESULT h = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), (IUnknown**)&WriteFactory);
@@ -109,10 +129,14 @@ void Graphics::drawText(const std::wstring& text, std::wstring font, WCHAR fontS
 
 
 void Graphics::DrawArc(float startX, float startY, float endX, float endY, float size, 
-	D2D1_SWEEP_DIRECTION direction, D2D1_ARC_SIZE arcSize, float r, float g, float b, float a, float stroke)
+	D2D1_SWEEP_DIRECTION direction, D2D1_ARC_SIZE arcSize, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float stroke)
 {
+	float red = ConvertUI8ToFloat(r);
+	float green = ConvertUI8ToFloat(g);
+	float blue = ConvertUI8ToFloat(b);
+	float alpha = ConvertUI8ToFloat(a);
 	ID2D1SolidColorBrush* brush;
-	RenderTarget->CreateSolidColorBrush(D2D1::ColorF(r, g, b, a), &brush);
+	RenderTarget->CreateSolidColorBrush(D2D1::ColorF(red, green, blue, alpha), &brush);
 	ID2D1PathGeometry* path;
 	D2D1_POINT_2F begin;
 	begin.x = startX;

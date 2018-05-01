@@ -9,21 +9,21 @@ class EventHandler;
 class UITextbox : public UIElement
 {
 public:
-	UITextbox(Graphics* graphics);
-	UITextbox(Graphics* graphics, std::wstring text);
-	UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName);
-	UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize);
-	UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY);
-	UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY, float Width, float Height);
-	UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY,
+	UITextbox(UIWindow* srcWindow);
+	UITextbox(UIWindow* srcWindow, std::wstring text);
+	UITextbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName);
+	UITextbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName, float fontSize);
+	UITextbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY);
+	UITextbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY, float Width, float Height);
+	UITextbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY,
 		float Width, float Height, Color* color);
-	UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY,
+	UITextbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY,
 		float Width, float Height, Color* color, float stroke);
 
 	void Draw();
 
 	// Getters
-	Graphics* GetGraphics() { return this->graphics; }
+	UIWindow* GetSourceWindow() { return this->srcWindow; }
 	std::wstring GetText() { return this->Text; }
 	std::wstring GetFontName() { return this->FontName; }
 	float GetFontSize() { return this->FontSize; }
@@ -66,9 +66,9 @@ public:
 		}
 		else
 		{
-			color->a = 0.14f;
-			textColor->a = 0.14f;
-			borderColor->a = 0.14f;
+			color->a = 36;
+			textColor->a = 36;
+			borderColor->a = 36;
 		}
 	}
 	void SetWidth(float width) { this->Width = width; }
@@ -78,44 +78,49 @@ public:
 		this->Focused = state;
 		if (state)
 		{
-			borderColor->r = 0.0f;
-			borderColor->g = 0.0f;
-			borderColor->b = 1.0f;
+			borderColor->r = 0;
+			borderColor->g = 0;
+			borderColor->b = 255;
 		}
 		else
 		{
-			borderColor->r = 0.0f;
-			borderColor->g = 0.0f;
-			borderColor->b = 0.0f;
+			borderColor->r = 0;
+			borderColor->g = 0;
+			borderColor->b = 0;
 		}
 	}
 	void UndoTextAction();
 	void IncrementDisplayStartIndex() { if (displayStartIndex < Text.size()-1) this->displayStartIndex++; }
 	void DecrementDisplayStartIndex() { if (displayStartIndex > 0) this->displayStartIndex--; }
 	void SetVisibleTextLimit(int limit) { this->textLimit = limit; }
-	void FadeOut(int animationDelay)
+	void FadeOut(int animationDelay, int decrementValue)
 	{
-		std::thread t([this, animationDelay] {
-			for (float i = color->a * 100; i >= 0; i--)
+		std::thread t([this, animationDelay, decrementValue] {
+			for (int i = color->a; i >= 1; i -= decrementValue)
 			{
 				Sleep(animationDelay);
-				color->a = i / 100;
+				uint8_t val = (uint8_t)i;
+				color->a = val;
 				this->normalAlpha = color->a;
 				this->textColor->a = color->a;
 				this->borderColor->a = color->a;
 			}
 			this->Visible = false;
+			return;
 		});
 		t.detach();
 	}
-	void FadeIn(int animationDelay, float finalAlpha)
+	void FadeIn(int animationDelay, int incrementValue, int finalAlpha)
 	{
-		std::thread t([this, animationDelay, finalAlpha] {
+		if (finalAlpha >= 255)
+			finalAlpha = 254;
+		std::thread t([this, animationDelay, incrementValue, finalAlpha] {
 			this->Visible = true;
-			for (float i = color->a; i <= finalAlpha; i += 0.01f)
+			for (int i = color->a; i <= finalAlpha; i += incrementValue)
 			{
 				Sleep(animationDelay);
-				color->a = i;
+				uint8_t val = (uint8_t)i;
+				color->a = val;
 				this->normalAlpha = color->a;
 				this->textColor->a = color->a;
 				this->borderColor->a = color->a;
@@ -126,7 +131,7 @@ public:
 
 	~UITextbox();
 private:
-	Graphics* graphics;
+	UIWindow* srcWindow;
 
 	std::wstring Text = std::wstring(L"");
 	std::vector<std::wstring> previousText = { Text };
@@ -138,7 +143,7 @@ private:
 	Color* color = new Color_White();
 	Color* textColor = new Color_Black();
 	Color* borderColor = new Color_Black();
-	float normalAlpha = 1.0f;
+	uint8_t normalAlpha = 255;
 	float Stroke = 1.0f;
 	float BorderStroke = 1.0f;
 	bool Enabled = true;

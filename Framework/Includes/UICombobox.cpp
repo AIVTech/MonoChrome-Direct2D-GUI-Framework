@@ -9,16 +9,16 @@ void Mouse_OnClick(UIElement* sender)
 	combo->SetDrawItems(!combo->GetDrawItems());
 }
 
-UICombobox::UICombobox(Graphics* graphics)
+UICombobox::UICombobox(UIWindow* srcWindow)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	SetMouseClickedHandler(Mouse_OnClick);
 	SetItemSelectionHandler();
 }
 
-UICombobox::UICombobox(Graphics* graphics, float xPos, float yPos, float Width, float Height)
+UICombobox::UICombobox(UIWindow* srcWindow, float xPos, float yPos, float Width, float Height)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->xPos = xPos;
 	this->yPos = yPos;
 	this->Width = Width;
@@ -27,9 +27,9 @@ UICombobox::UICombobox(Graphics* graphics, float xPos, float yPos, float Width, 
 	SetItemSelectionHandler();
 }
 
-UICombobox::UICombobox(Graphics* graphics, float xPos, float yPos, float Width, float Height, Color* color)
+UICombobox::UICombobox(UIWindow* srcWindow, float xPos, float yPos, float Width, float Height, Color* color)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->xPos = xPos;
 	this->yPos = yPos;
 	this->Width = Width;
@@ -49,22 +49,22 @@ void UICombobox::Draw()
 {
 	if (!RoundedCorners)
 	{
-		this->graphics->DrawRectangle(xPos, yPos, Width, Height, color->r, color->g, color->b, color->a, 0, true); // Actual combobox
-		this->graphics->DrawRectangle(xPos - 0.1f, yPos - 0.1f,
-			Width + 0.1f, Height + 0.1f, 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, false); // Border box
+		this->srcWindow->GetGraphics()->DrawRectangle(xPos, yPos, Width, Height, color->r, color->g, color->b, color->a, 0, true); // Actual combobox
+		this->srcWindow->GetGraphics()->DrawRectangle(xPos - 0.1f, yPos - 0.1f,
+			Width + 0.1f, Height + 0.1f, 128, 128, 128, 255, 1.0f, false); // Border box
 	}
 	else
 	{
-		this->graphics->DrawRoundedRectangle(xPos, yPos, Width, Height, 
+		this->srcWindow->GetGraphics()->DrawRoundedRectangle(xPos, yPos, Width, Height,
 			roundCornerRadiusX, roundCornerRadiusY, color->r, color->g, color->b, color->a, 0, true); // Actual combobox
 
-		this->graphics->DrawRoundedRectangle(xPos - 0.1f, yPos - 0.1f, Width + 0.1f, Height + 0.1f, 
-			roundCornerRadiusX, roundCornerRadiusY, 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, false); // Border Box
+		this->srcWindow->GetGraphics()->DrawRoundedRectangle(xPos - 0.1f, yPos - 0.1f, Width + 0.1f, Height + 0.1f,
+			roundCornerRadiusX, roundCornerRadiusY, 128, 128, 128, 255, 1.0f, false); // Border Box
 	}
 
-	this->graphics->drawText(L"▼", L"Arial", 16, xPos + Width - 14.0f, yPos, 4.0f, Height - 0.6f, 0.0f, 0.0f, 0.0f, 1.0f); // Arrow Key Down
+	this->srcWindow->GetGraphics()->drawText(L"▼", L"Arial", 16, xPos + Width - 14.0f, yPos, 4.0f, Height - 0.6f, 0, 0, 0, 255); // Arrow Key Down
 
-	this->graphics->drawText(Items.at(SelectedIndex), L"Arial", Height - 10, xPos + 2.0f, yPos, Width - 14.0f, Height, 0.0f, 0.0f, 0.0f, 1.0f); // Actual Text
+	this->srcWindow->GetGraphics()->drawText(Items.at(SelectedIndex), L"Arial", Height - 10, xPos + 2.0f, yPos, Width - 14.0f, Height, 0, 0, 0, 255); // Actual Text
 
 	if (this->drawItems)
 	{
@@ -73,25 +73,25 @@ void UICombobox::Draw()
 		{
 			for (int i = 1; i < Items.size(); i++)
 			{
-				float red = color->r, green = color->g, blue = color->b, textRed = 0.0f, textGreen = 0.0f, textBlue = 0.0f;
+				uint8_t red = color->r, green = color->g, blue = color->b, textRed = 0, textGreen = 0, textBlue = 0;
 				if (i == hoverIndex)
 				{
-					red = 0.0f;
-					green = 0.0f;
-					blue = 0.9f;
+					red = 0;
+					green = 0;
+					blue = 230;
 
-					textRed = 1.0f;
-					textGreen = 1.0f;
-					textBlue = 1.0f;
+					textRed = 255;
+					textGreen = 255;
+					textBlue = 255;
 				}
 
 				float y = yPos + Height*i;
 				float w = Width - 14.0f;
-				this->graphics->DrawRectangle(xPos, y, w, Height, red, green, blue, color->a, 0, true); // Actual combobox
-				this->graphics->DrawRectangle(xPos - 0.1f, y,
-					w + 0.1f, Height + 0.1f, 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, false); // Border box
+				this->srcWindow->GetGraphics()->DrawRectangle(xPos, y, w, Height, red, green, blue, color->a, 0, true); // Actual combobox
+				this->srcWindow->GetGraphics()->DrawRectangle(xPos - 0.1f, y,
+					w + 0.1f, Height + 0.1f, 128, 128, 128, 255, 1.0f, false); // Border box
 
-				this->graphics->drawText(Items.at(i), L"Arial", Height - 10, xPos + 2.0f, y, w, Height, textRed, textGreen, textBlue, 1.0f);
+				this->srcWindow->GetGraphics()->drawText(Items.at(i), L"Arial", Height - 10, xPos + 2.0f, y, w, Height, textRed, textGreen, textBlue, 255);
 			}
 		}
 	}

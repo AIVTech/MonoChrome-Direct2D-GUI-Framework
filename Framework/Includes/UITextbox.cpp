@@ -1,39 +1,39 @@
 #include "UITextbox.h"
 #include "UITextboxStateHandler.h"
 
-UITextbox::UITextbox(Graphics* graphics)
+UITextbox::UITextbox(UIWindow* srcWindow)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	SetTextboxStateHandler();
 }
 
-UITextbox::UITextbox(Graphics* graphics, std::wstring text)
+UITextbox::UITextbox(UIWindow* srcWindow, std::wstring text)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->Text = text;
 	SetTextboxStateHandler();
 }
 
-UITextbox::UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName)
+UITextbox::UITextbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->Text = text;
 	this->FontName = fontName;
 	SetTextboxStateHandler();
 }
 
-UITextbox::UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize)
+UITextbox::UITextbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName, float fontSize)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->Text = text;
 	this->FontName = fontName;
 	this->FontSize = fontSize;
 	SetTextboxStateHandler();
 }
 
-UITextbox::UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY)
+UITextbox::UITextbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->Text = text;
 	this->FontName = fontName;
 	this->FontSize = fontSize;
@@ -42,9 +42,9 @@ UITextbox::UITextbox(Graphics* graphics, std::wstring text, std::wstring fontNam
 	SetTextboxStateHandler();
 }
 
-UITextbox::UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY, float Width, float Height)
+UITextbox::UITextbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY, float Width, float Height)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->Text = text;
 	this->FontName = fontName;
 	this->FontSize = fontSize;
@@ -55,10 +55,10 @@ UITextbox::UITextbox(Graphics* graphics, std::wstring text, std::wstring fontNam
 	SetTextboxStateHandler();
 }
 
-UITextbox::UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY,
+UITextbox::UITextbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY,
 	float Width, float Height, Color* color)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->Text = text;
 	this->FontName = fontName;
 	this->FontSize = fontSize;
@@ -71,10 +71,10 @@ UITextbox::UITextbox(Graphics* graphics, std::wstring text, std::wstring fontNam
 	SetTextboxStateHandler();
 }
 
-UITextbox::UITextbox(Graphics* graphics, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY,
+UITextbox::UITextbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName, float fontSize, float posX, float posY,
 	float Width, float Height, Color* color, float stroke)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->Text = text;
 	this->FontName = fontName;
 	this->FontSize = fontSize;
@@ -95,8 +95,8 @@ UITextbox::~UITextbox()
 void UITextbox::Draw()
 {
 
-	this->graphics->DrawRectangle(xPos, yPos, Width, Height, color->r, color->g, color->b, color->a, Stroke, Filled); // Actual Textbox.
-	this->graphics->DrawRectangle(xPos - 0.2f, yPos - 0.2f, Width + 0.2f, Height + 0.2f,
+	this->srcWindow->GetGraphics()->DrawRectangle(xPos, yPos, Width, Height, color->r, color->g, color->b, color->a, Stroke, Filled); // Actual Textbox.
+	this->srcWindow->GetGraphics()->DrawRectangle(xPos - 0.2f, yPos - 0.2f, Width + 0.2f, Height + 0.2f,
 		borderColor->r, borderColor->g, borderColor->b, borderColor->a, BorderStroke, false); // Bounding box.
 
 	std::wstring txt = Text;
@@ -114,7 +114,7 @@ void UITextbox::Draw()
 			txt.erase(txt.begin(), txt.begin() + startIndex);
 		}
 	}
-	this->graphics->drawText(std::wstring(txt), FontName, FontSize,
+	this->srcWindow->GetGraphics()->drawText(std::wstring(txt), FontName, FontSize,
 		xPos + 0.2f, yPos + 0.2f, Width - 0.2f, Height - 0.2f, textColor->r, textColor->g, textColor->b, textColor->a); // Text.
 }
 

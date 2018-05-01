@@ -14,14 +14,14 @@ class UICombobox : public UIElement
 {
 public:
 
-	UICombobox(Graphics* graphics);
-	UICombobox(Graphics* graphics, float xPos, float yPos, float Width, float Height);
-	UICombobox(Graphics* graphics, float xPos, float yPos, float Width, float Height, Color* color);
+	UICombobox(UIWindow* srcWindow);
+	UICombobox(UIWindow* srcWindow, float xPos, float yPos, float Width, float Height);
+	UICombobox(UIWindow* srcWindow, float xPos, float yPos, float Width, float Height, Color* color);
 
 	void Draw();
 
 	// Getters
-	Graphics* GetGraphics() { return this->graphics; }
+	UIWindow* GetSourceWindow() { return this->srcWindow; }
 	float GetPosX() { return this->xPos; }
 	float GetPosY() { return this->yPos; }
 	float GetWidth() { return this->Width; }
@@ -51,7 +51,7 @@ public:
 		}
 		else
 		{
-			color->a = 0.14f;
+			color->a = 36;
 		}
 	}
 	void SetColor(Color* color) { this->color = color; }
@@ -61,27 +61,32 @@ public:
 	void SetHoverIndex(int index) { this->hoverIndex = index; }
 	void SetRoundedCorners(bool state) { this->RoundedCorners = state; }
 	void SetRoundedCornersRadii(float radX, float radY) { this->roundCornerRadiusX = radX; this->roundCornerRadiusY = radY; }
-	void FadeOut(int animationDelay)
+	void FadeOut(int animationDelay, int decrementValue)
 	{
-		std::thread t([this, animationDelay] {
-			for (float i = color->a * 100; i >= 0; i--)
+		std::thread t([this, animationDelay, decrementValue] {
+			for (int i = color->a; i >= 1; i -= decrementValue)
 			{
 				Sleep(animationDelay);
-				color->a = i / 100;
+				uint8_t val = (uint8_t)i;
+				color->a = val;
 				this->normalAlpha = color->a;
 			}
 			this->Visible = false;
+			return;
 		});
 		t.detach();
 	}
-	void FadeIn(int animationDelay, float finalAlpha)
+	void FadeIn(int animationDelay, int incrementValue, int finalAlpha)
 	{
-		std::thread t([this, animationDelay, finalAlpha] {
+		if (finalAlpha >= 255)
+			finalAlpha = 254;
+		std::thread t([this, animationDelay, incrementValue, finalAlpha] {
 			this->Visible = true;
-			for (float i = color->a; i <= finalAlpha; i += 0.01f)
+			for (int i = color->a; i <= finalAlpha; i += incrementValue)
 			{
 				Sleep(animationDelay);
-				color->a = i;
+				uint8_t val = (uint8_t)i;
+				color->a = val;
 				this->normalAlpha = color->a;
 			}
 		});
@@ -100,9 +105,9 @@ public:
 	~UICombobox();
 
 private:
-	Graphics* graphics;
+	UIWindow* srcWindow;
 	float xPos = 0, yPos = 0, Width = 0, Height = 0;
-	float normalAlpha = 1.0f;
+	uint8_t normalAlpha = 255;
 	Color* color = new Color_White();
 	bool Visible = true;
 	bool Enabled = true;

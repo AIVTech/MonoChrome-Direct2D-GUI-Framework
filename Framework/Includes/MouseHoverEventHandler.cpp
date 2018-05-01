@@ -20,7 +20,7 @@ void MouseHoverEventHandler::StartListener()
 		{
 			POINT pos;
 			GetCursorPos(&pos);
-			ScreenToClient(sender->GetGraphics()->GetHWND(), &pos);
+			ScreenToClient(sender->GetSourceWindow()->GetHWND(), &pos);
 
 			if (pos.x < sender->GetPosX() + sender->GetWidth() && pos.x > sender->GetPosX() &&
 				pos.y < sender->GetPosY() + sender->GetHeight() && pos.y > sender->GetPosY())

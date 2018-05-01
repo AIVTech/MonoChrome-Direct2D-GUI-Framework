@@ -1,22 +1,22 @@
 #include "UICircularProgressBar.h"
 
-UICircularProgressBar::UICircularProgressBar(Graphics* graphics)
+UICircularProgressBar::UICircularProgressBar(UIWindow* srcWindow)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 }
 
-UICircularProgressBar::UICircularProgressBar(Graphics* graphics, float xPos, float yPos)
+UICircularProgressBar::UICircularProgressBar(UIWindow* srcWindow, float xPos, float yPos)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->xPos = xPos;
 	this->yPos = yPos;
 	this->arcEndPointX = xPos;
 	this->arcEndPointY = yPos - Radius;
 }
 
-UICircularProgressBar::UICircularProgressBar(Graphics* graphics, float xPos, float yPos, float radius)
+UICircularProgressBar::UICircularProgressBar(UIWindow* srcWindow, float xPos, float yPos, float radius)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->xPos = xPos;
 	this->yPos = yPos;
 	this->Radius = radius;
@@ -24,9 +24,9 @@ UICircularProgressBar::UICircularProgressBar(Graphics* graphics, float xPos, flo
 	this->arcEndPointY = yPos - Radius;
 }
 
-UICircularProgressBar::UICircularProgressBar(Graphics* graphics, float xPos, float yPos, float radius, float stroke)
+UICircularProgressBar::UICircularProgressBar(UIWindow* srcWindow, float xPos, float yPos, float radius, float stroke)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->xPos = xPos;
 	this->yPos = yPos;
 	this->Radius = radius;
@@ -43,10 +43,10 @@ UICircularProgressBar::~UICircularProgressBar()
 
 void UICircularProgressBar::Draw()
 {
-	graphics->DrawCircle(xPos, yPos, Radius, color->r, color->g, color->b, color->a, Stroke, false);
+	srcWindow->GetGraphics()->DrawCircle(xPos, yPos, Radius, color->r, color->g, color->b, color->a, Stroke, false);
 	if (Value > MinValue)
 	{
-		graphics->DrawArc(xPos, yPos - Radius, arcEndPointX, arcEndPointY, Radius,
+		srcWindow->GetGraphics()->DrawArc(xPos, yPos - Radius, arcEndPointX, arcEndPointY, Radius,
 			D2D1_SWEEP_DIRECTION_CLOCKWISE, arcSize, progressColor->r, progressColor->g, progressColor->b, progressColor->a, Stroke);
 	}
 }

@@ -1,0 +1,86 @@
+#include "UIWindow.h"
+#include "UIElement.h"
+
+int windowNum = 0;
+
+LRESULT CALLBACK windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	if (uMsg == WM_DESTROY) { PostQuitMessage(0); return 0; }
+
+	return DefWindowProc(hwnd, uMsg, wParam, lParam);
+}
+
+
+UIWindow::UIWindow()
+{
+	this->graphics = new Graphics();
+}
+
+UIWindow::~UIWindow()
+{
+
+}
+
+void UIWindow::mcCreateWindow(const int width, const int height, LPCWSTR windowName)
+{
+	std::wstring windowID = L"Window";
+	windowID.append(std::to_wstring(windowNum));
+	windowNum++;
+
+	WNDCLASSEX window;
+	ZeroMemory(&window, sizeof(WNDCLASSEX));
+	window.cbSize = sizeof(WNDCLASSEX);
+	window.hbrBackground = (HBRUSH)COLOR_WINDOW;
+	window.lpfnWndProc = windowProc;
+	window.lpszClassName = windowID.c_str();
+	window.style = CS_HREDRAW | CS_VREDRAW;
+	RegisterClassEx(&window);
+
+	RECT rect = { 0, 0, width, height };
+	AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, false, WS_EX_OVERLAPPEDWINDOW);
+
+	HWND hWnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, windowID.c_str(), windowName, WS_OVERLAPPEDWINDOW, 80, 80,
+		rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, NULL, 0);
+	if (!hWnd) { return; }
+
+	if (!graphics->Init(hWnd))
+	{
+		delete graphics;
+		return;
+	}
+
+	this->hWnd = hWnd;
+}
+
+void UIWindow::Show()
+{
+	ShowWindow(hWnd, SW_SHOW);
+}
+
+void UIWindow::Hide()
+{
+	ShowWindow(hWnd, SW_HIDE);
+}
+
+void UIWindow::Dispose()
+{
+	DestroyWindow(hWnd);
+}
+
+void UIWindow::Update()
+{
+	graphics->BeginDraw();
+	graphics->ClearScreen(r, g, b);
+
+	// UI Elements
+	for (int i = 0; i < elements.size(); i++)
+	{
+		if (elements.at(i)->GetVisible())
+		{
+			elements.at(i)->Draw();
+		}
+	}
+
+	graphics->EndDraw();
+}
+

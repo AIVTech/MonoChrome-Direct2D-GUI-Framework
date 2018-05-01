@@ -10,15 +10,15 @@ class UISlider : public UIElement
 {
 public:
 	typedef void(*callback_function)(UIElement* sender);
-	UISlider(Graphics* graphcis);
-	UISlider(Graphics* graphcis, float x, float y);
-	UISlider(Graphics* graphcis, float x, float y, float width);
+	UISlider(UIWindow* srcWindow);
+	UISlider(UIWindow* srcWindow, float x, float y);
+	UISlider(UIWindow* srcWindow, float x, float y, float width);
 
 
 	void Draw();
 
 	// Getters
-	Graphics* GetGraphics() { return graphics; }
+	UIWindow* GetSourceWindow() { return srcWindow; }
 	float GetPosX() { return xPos; }
 	float GetPosY() { return yPos; }
 	float GetWidth() { return Width; }
@@ -57,32 +57,37 @@ public:
 		}
 		else
 		{
-			color->a = 0.14f;
-			knobColor->a = 0.14f;
+			color->a = 36;
+			knobColor->a = 36;
 		}
 	}
-	void FadeOut(int animationDelay)
+	void FadeOut(int animationDelay, int decrementValue)
 	{
-		std::thread t([this, animationDelay] {
-			for (float i = color->a * 100; i >= 0; i--)
+		std::thread t([this, animationDelay, decrementValue] {
+			for (int i = color->a; i >= 1; i -= decrementValue)
 			{
 				Sleep(animationDelay);
-				color->a = i / 100;
+				uint8_t val = (uint8_t)i;
+				color->a = val;
 				this->normalAlpha = color->a;
 				this->knobColor->a = color->a;
 			}
 			this->Visible = false;
+			return;
 		});
 		t.detach();
 	}
-	void FadeIn(int animationDelay, float finalAlpha)
+	void FadeIn(int animationDelay, int incrementValue, int finalAlpha)
 	{
-		std::thread t([this, animationDelay, finalAlpha] {
+		if (finalAlpha >= 255)
+			finalAlpha = 254;
+		std::thread t([this, animationDelay, incrementValue, finalAlpha] {
 			this->Visible = true;
-			for (float i = color->a; i <= finalAlpha; i += 0.01f)
+			for (int i = color->a; i <= finalAlpha; i += incrementValue)
 			{
 				Sleep(animationDelay);
-				color->a = i;
+				uint8_t val = (uint8_t)i;
+				color->a = val;
 				this->normalAlpha = color->a;
 				this->knobColor->a = color->a;
 			}
@@ -96,10 +101,10 @@ public:
 	~UISlider();
 
 private:
-	Graphics* graphics;
+	UIWindow* srcWindow;
 	float xPos = 0, yPos = 0, Width = 120;
-	float normalAlpha = 1.0f;
-	Color* color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+	uint8_t normalAlpha = 255;
+	Color* color = new Color(80, 80, 80, 255);
 	float Height = 4;
 	float MinValue = 0, MaxValue = 100, Intervals = 10;
 	float currentValue = MinValue;

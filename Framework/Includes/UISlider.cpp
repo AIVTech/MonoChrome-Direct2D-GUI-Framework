@@ -8,24 +8,24 @@ void somefunc(UIElement* sender)
 }
 
 // Default constructor
-UISlider::UISlider(Graphics* graphics)
+UISlider::UISlider(UIWindow* srcWindow)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	SetPressedMouseMovedHandler(somefunc);
 }
 
-UISlider::UISlider(Graphics* graphics, float x, float y)
+UISlider::UISlider(UIWindow* srcWindow, float x, float y)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->xPos = x;
 	this->yPos = y;
 	this->knobPosX = xPos + currentValue;
 	SetPressedMouseMovedHandler(somefunc);
 }
 
-UISlider::UISlider(Graphics* graphics, float x, float y, float width)
+UISlider::UISlider(UIWindow* srcWindow, float x, float y, float width)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->xPos = x;
 	this->yPos = y;
 	this->knobPosX = xPos + currentValue;
@@ -42,10 +42,10 @@ UISlider::~UISlider()
 void UISlider::Draw()
 {
 	// draw a bar
-	this->graphics->DrawRectangle(xPos, yPos, Width, Height, color->r, color->g, color->b, color->a, 2, true);
+	this->srcWindow->GetGraphics()->DrawRectangle(xPos, yPos, Width, Height, color->r, color->g, color->b, color->a, 2, true);
 	
 	// draw a slider-knob / handle
-	this->graphics->DrawCircle(knobPosX, yPos, Radius, knobColor->r, knobColor->g, knobColor->b, knobColor->a, 1, true);
+	this->srcWindow->GetGraphics()->DrawCircle(knobPosX, yPos, Radius, knobColor->r, knobColor->g, knobColor->b, knobColor->a, 1, true);
 }
 
 void UISlider::SetPressedMouseMovedHandler(callback_function func)

@@ -25,7 +25,7 @@ void ComboboxItemEventHandler::StartListener()
 			// Left Click Action
 			POINT pos;
 			GetCursorPos(&pos);
-			ScreenToClient(sender->GetGraphics()->GetHWND(), &pos);
+			ScreenToClient(sender->GetSourceWindow()->GetHWND(), &pos);
 
 			for (int i = 1; i < combo->GetItems().size(); i++)
 			{

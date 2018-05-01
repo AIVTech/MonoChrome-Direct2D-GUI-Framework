@@ -6,15 +6,15 @@
 class UICircularProgressBar : public UIElement
 {
 public:
-	UICircularProgressBar(Graphics* graphics);
-	UICircularProgressBar(Graphics* graphics, float xPos, float yPos);
-	UICircularProgressBar(Graphics* graphics, float xPos, float yPos, float radius);
-	UICircularProgressBar(Graphics* graphics, float xPos, float yPos, float radius, float stroke);
+	UICircularProgressBar(UIWindow* srcWindow);
+	UICircularProgressBar(UIWindow* srcWindow, float xPos, float yPos);
+	UICircularProgressBar(UIWindow* srcWindow, float xPos, float yPos, float radius);
+	UICircularProgressBar(UIWindow* srcWindow, float xPos, float yPos, float radius, float stroke);
 
 	void Draw();
 
 	// Getters
-	Graphics* GetGraphics() { return this->graphics; }
+	UIWindow* GetSourceWindow() { return this->srcWindow; }
 	float GetPosX() { return this->xPos; }
 	float GetPosY() { return this->yPos; }
 	float GetWidth() { return this->Width; }
@@ -49,36 +49,41 @@ public:
 		}
 		else
 		{
-			color->a = 0.14f;
-			progressColor->a = 0.14f;
+			color->a = 36;
+			progressColor->a = 36;
 		}
 	}
 	void SetValue(float value) { this->Value = value; UpdateArcEndPoint();  }
 	void SetMinValue(float value) { this->MinValue = value; }
 	void SetMaxValue(float value) { this->MaxValue = value; }
 	void SetInterval(float value) { this->Interval = value; }
-	void FadeOut(int animationDelay)
+	void FadeOut(int animationDelay, int decrementValue)
 	{
-		std::thread t([this, animationDelay] {
-			for (float i = color->a * 100; i >= 0; i--)
+		std::thread t([this, animationDelay, decrementValue] {
+			for (int i = color->a; i >= 1; i -= decrementValue)
 			{
 				Sleep(animationDelay);
-				color->a = i / 100;
+				uint8_t val = (uint8_t)i;
+				color->a = val;
 				this->normalAlpha = color->a;
 				this->progressColor->a = color->a;
 			}
 			this->Visible = false;
+			return;
 		});
 		t.detach();
 	}
-	void FadeIn(int animationDelay, float finalAlpha)
+	void FadeIn(int animationDelay, int incrementValue, int finalAlpha)
 	{
-		std::thread t([this, animationDelay, finalAlpha] {
+		if (finalAlpha >= 255)
+			finalAlpha = 254;
+		std::thread t([this, animationDelay, incrementValue, finalAlpha] {
 			this->Visible = true;
-			for (float i = color->a; i <= finalAlpha; i += 0.01f)
+			for (int i = color->a; i <= finalAlpha; i += incrementValue)
 			{
 				Sleep(animationDelay);
-				color->a = i;
+				uint8_t val = (uint8_t)i;
+				color->a = val;
 				this->normalAlpha = color->a;
 				this->progressColor->a = color->a;
 			}
@@ -88,14 +93,14 @@ public:
 
 	~UICircularProgressBar();
 private:
-	Graphics * graphics;
+	UIWindow* srcWindow;
 
 	void SetArcEndPoint(float x, float y) { this->arcEndPointX = x; this->arcEndPointY = y; }
 	void UpdateArcEndPoint();
 	D2D1_ARC_SIZE arcSize = D2D1_ARC_SIZE_SMALL;
 
 	float xPos = 0, yPos = 0, Width = 0, Height = 0;
-	float normalAlpha = 1.0f;
+	uint8_t normalAlpha = 255;
 	Color* color = new Color_Black();
 	Color* progressColor = new Color_LimeGreen();
 	float arcEndPointX = xPos;

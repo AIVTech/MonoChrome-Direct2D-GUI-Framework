@@ -30,7 +30,7 @@ void MouseMovedWhileDownEventHandler::StartListener()
 			// Get Mouse Position
 			POINT pos;
 			GetCursorPos(&pos);
-			ScreenToClient(sender->GetGraphics()->GetHWND(), &pos);
+			ScreenToClient(sender->GetSourceWindow()->GetHWND(), &pos);
 
 			// If Mouse is Pressed
 			if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)

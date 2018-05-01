@@ -1,5 +1,5 @@
+#include "UIWindow.h"
 #include "Graphics.h"
-#include "Renderer.h"
 #include "EventHandler.h"
 #include "UIElement.h"
 #include "UIButton.h"
@@ -16,3 +16,4 @@
 #include "UICircularProgressBar.h"
 #include "UITextbox.h"
 #include "UITextboxStateHandler.h"
+#include "Color.h"

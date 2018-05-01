@@ -16,39 +16,39 @@ void ChangeState_OnMouseClick(UIElement* sender)
 }
 
 // Default Constructor
-UICheckbox::UICheckbox(Graphics* graphics)
+UICheckbox::UICheckbox(UIWindow* srcWindow)
 {
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	SetMouseClickHandler(ChangeState_OnMouseClick);
 }
 
-UICheckbox::UICheckbox(Graphics* g, std::wstring text)
+UICheckbox::UICheckbox(UIWindow* srcWindow, std::wstring text)
 {
-	this->graphics = g;
+	this->srcWindow = srcWindow;
 	this->Text = text;
 	SetMouseClickHandler(ChangeState_OnMouseClick);
 }
 
-UICheckbox::UICheckbox(Graphics* g, std::wstring text, std::wstring fontName)
+UICheckbox::UICheckbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName)
 {
-	this->graphics = g;
+	this->srcWindow = srcWindow;
 	this->Text = text;
 	this->FontName = fontName;
 	SetMouseClickHandler(ChangeState_OnMouseClick);
 }
 
-UICheckbox::UICheckbox(Graphics* g, std::wstring text, std::wstring fontName, int FontSize)
+UICheckbox::UICheckbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName, int FontSize)
 {
-	this->graphics = g;
+	this->srcWindow = srcWindow;
 	this->Text = text;
 	this->FontName = fontName;
 	this->FontSize = FontSize;
 	SetMouseClickHandler(ChangeState_OnMouseClick);
 }
 
-UICheckbox::UICheckbox(Graphics* g, std::wstring text, std::wstring fontName, int FontSize, float xPos, float yPos, float size)
+UICheckbox::UICheckbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName, int FontSize, float xPos, float yPos, float size)
 {
-	this->graphics = g;
+	this->srcWindow = srcWindow;
 	this->Text = text;
 	this->FontName = fontName;
 	this->FontSize = FontSize;
@@ -58,10 +58,10 @@ UICheckbox::UICheckbox(Graphics* g, std::wstring text, std::wstring fontName, in
 	SetMouseClickHandler(ChangeState_OnMouseClick);
 }
 
-UICheckbox::UICheckbox(Graphics* graphics, std::wstring text, std::wstring fontName,
+UICheckbox::UICheckbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName,
 	int FontSize, float xPos, float yPos, float size, float TextWidth, float TextHeight) {
 
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->Text = text;
 	this->FontName = fontName;
 	this->FontSize = FontSize;
@@ -73,10 +73,10 @@ UICheckbox::UICheckbox(Graphics* graphics, std::wstring text, std::wstring fontN
 	SetMouseClickHandler(ChangeState_OnMouseClick);
 }
 
-UICheckbox::UICheckbox(Graphics* graphics, std::wstring text, std::wstring fontName,
+UICheckbox::UICheckbox(UIWindow* srcWindow, std::wstring text, std::wstring fontName,
 	int FontSize, float xPos, float yPos, float size, float TextWidth, float TextHeight, float margins) {
 
-	this->graphics = graphics;
+	this->srcWindow = srcWindow;
 	this->Text = text;
 	this->FontName = fontName;
 	this->FontSize = FontSize;
@@ -100,21 +100,21 @@ void UICheckbox::Draw()
 {
 	if (!this->RoundedCorners)
 	{
-		graphics->DrawRectangle(xPos, yPos, Size, Size, color->r, color->g, color->b, color->a, 0, true);
+		srcWindow->GetGraphics()->DrawRectangle(xPos, yPos, Size, Size, color->r, color->g, color->b, color->a, 0, true);
 	}
 	else
 	{
-		graphics->DrawRoundedRectangle(xPos, yPos, Size, Size, roundCornerRadiusX, roundCornerRadiusY, 
+		srcWindow->GetGraphics()->DrawRoundedRectangle(xPos, yPos, Size, Size, roundCornerRadiusX, roundCornerRadiusY, 
 			color->r, color->g, color->b, color->a, 0, true);
 	}
 
-	graphics->drawText(Text, FontName, FontSize, xPos+Size, yPos-Size/2, TextWidth, TextHeight, 
+	srcWindow->GetGraphics()->drawText(Text, FontName, FontSize, xPos+Size, yPos-Size/2, TextWidth, TextHeight, 
 		textColor->r, textColor->g, textColor->b, textColor->a);
 
 	if (Checked)
 	{
 		// Indicate that the checkbox is checked.
-		graphics->drawText(L"✔", L"Verdana", Size-10, xPos+0.2f, yPos+0.2f, Size-0.2f, Size-0.2f, 0.0f, 0.0f, 0.0f, 1.0f);
+		srcWindow->GetGraphics()->drawText(L"✔", L"Verdana", Size-10, xPos+0.2f, yPos+0.2f, Size-0.2f, Size-0.2f, 0, 0, 0, 255);
 	}
 }
 

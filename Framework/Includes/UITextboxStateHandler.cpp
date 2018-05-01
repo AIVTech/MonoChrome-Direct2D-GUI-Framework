@@ -73,7 +73,7 @@ void UITextboxStateHandler::StartListener()
 				// Left Click Action
 				POINT pos;
 				GetCursorPos(&pos);
-				ScreenToClient(srcTextBox->GetGraphics()->GetHWND(), &pos);
+				ScreenToClient(srcTextBox->GetSourceWindow()->GetHWND(), &pos);
 
 				if (pos.x < srcTextBox->GetPosX() + srcTextBox->GetWidth() && pos.x > srcTextBox->GetPosX() &&
 					pos.y < srcTextBox->GetPosY() + srcTextBox->GetHeight() && pos.y > srcTextBox->GetPosY())

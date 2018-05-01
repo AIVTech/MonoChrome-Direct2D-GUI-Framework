@@ -9,24 +9,24 @@
 class UILabel : public UIElement
 {
 public:
-	UILabel(Graphics* g);
-	UILabel(Graphics* g, std::wstring text);
-	UILabel(Graphics* g, std::wstring text, std::wstring fontName);
-	UILabel(Graphics* g, std::wstring text, std::wstring fontName, int FontSize);
-	UILabel(Graphics* g, std::wstring text, std::wstring fontName, int FontSize, float xPos, float yPos, float Width, float Height);
-	UILabel(Graphics* graphics, std::wstring text, std::wstring fontName,
+	UILabel(UIWindow* srcWindow);
+	UILabel(UIWindow* srcWindow, std::wstring text);
+	UILabel(UIWindow* srcWindow, std::wstring text, std::wstring fontName);
+	UILabel(UIWindow* srcWindow, std::wstring text, std::wstring fontName, int FontSize);
+	UILabel(UIWindow* srcWindow, std::wstring text, std::wstring fontName, int FontSize, float xPos, float yPos, float Width, float Height);
+	UILabel(UIWindow* srcWindow, std::wstring text, std::wstring fontName,
 		int FontSize, float xPos, float yPos, float Width, float Height, Color* color);
 
-	UILabel(Graphics* graphics, std::wstring text, std::wstring fontName,
+	UILabel(UIWindow* srcWindow, std::wstring text, std::wstring fontName,
 		int FontSize, float xPos, float yPos, float Width, float Height, Color* color, float stroke);
 
-	UILabel(Graphics* graphics, std::wstring text, std::wstring fontName,
+	UILabel(UIWindow* srcWindow, std::wstring text, std::wstring fontName,
 		int FontSize, float xPos, float yPos, float Width, float Height, Color* color, float stroke, float margins);
 
 	void Draw();
 
 	// Getters
-	Graphics* GetGraphics() { return this->graphics; }
+	UIWindow* GetSourceWindow() { return this->srcWindow; }
 	std::wstring GetText() { return this->Text; }
 	std::wstring GetFontName() { return this->FontName; }
 	int GetFontSize() { return this->FontSize; }
@@ -56,27 +56,32 @@ public:
 	void SetHeight(float height) { this->Height = height; }
 	void SetFilled(bool state) { this->Filled = state; }
 	void SetVisible(bool state) { this->Visible = state; }
-	void FadeOut(int animationDelay)
+	void FadeOut(int animationDelay, int decrementValue)
 	{
-		std::thread t([this, animationDelay] {
-			for (float i = color->a * 100; i >= 0; i--)
+		std::thread t([this, animationDelay, decrementValue] {
+			for (int i = color->a; i >= 1; i -= decrementValue)
 			{
 				Sleep(animationDelay);
-				color->a = i / 100;
+				uint8_t val = (uint8_t)i;
+				color->a = val;
 				this->textColor->a = color->a;
 			}
 			this->Visible = false;
+			return;
 		});
 		t.detach();
 	}
-	void FadeIn(int animationDelay, float finalAlpha)
+	void FadeIn(int animationDelay, int incrementValue, int finalAlpha)
 	{
-		std::thread t([this, animationDelay, finalAlpha] {
+		if (finalAlpha >= 255)
+			finalAlpha = 254;
+		std::thread t([this, animationDelay, incrementValue, finalAlpha] {
 			this->Visible = true;
-			for (float i = color->a; i <= finalAlpha; i += 0.01f)
+			for (int i = color->a; i <= finalAlpha; i += incrementValue)
 			{
 				Sleep(animationDelay);
-				color->a = i;
+				uint8_t val = (uint8_t)i;
+				color->a = val;
 				this->textColor->a = color->a;
 			}
 		});
@@ -86,13 +91,13 @@ public:
 	virtual ~UILabel();
 
 private:
-	Graphics* graphics;
+	UIWindow* srcWindow;
 	std::wstring Text = std::wstring(L"");
 	std::wstring FontName = std::wstring(L"Arial");
 	int FontSize = 10;
 	float xPos = 0, yPos = 0, Width = 0, Height = 0;
-	Color* color = new Color(0.8f, 0.8f, 0.8f, 1.0f);
-	Color* textColor = new Color_White();
+	Color* color = new Color(200, 200, 200, 255);
+	Color* textColor = new Color_Black();
 	float Stroke = 1.0f;
 	float Margins = 0.1f;
 	bool Filled = false;
