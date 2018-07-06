@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include <vector>
 #include <string>
+#include "Color.h"
 
 class UIElement;
 
@@ -31,6 +32,7 @@ public:
 	int GetHeight() { return this->height; }
 
 	void SetResizable(bool state) { this->resizable = state; }
+	void SetBackgroundColor(Color* color) { this->r = color->r; this->g = color->g; this->b = color->b; }
 
 	~UIWindow();
 private:

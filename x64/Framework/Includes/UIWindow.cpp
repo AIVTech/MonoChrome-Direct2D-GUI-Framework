@@ -17,6 +17,18 @@ LRESULT CALLBACK windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
 
+LRESULT CALLBACK childWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	if (uMsg == WM_DESTROY) { return 0; }
+	if (uMsg == WM_SIZE)
+	{
+		RECT newSize;
+		GetClientRect(hwnd, &newSize);
+		graphicsReference->ResizeRenderTarget(newSize.right - newSize.left, newSize.bottom - newSize.top);
+	}
+
+	return DefWindowProc(hwnd, uMsg, wParam, lParam);
+}
 
 UIWindow::UIWindow()
 {
@@ -42,7 +54,16 @@ void UIWindow::mcCreateWindow(const int width, const int height, LPCWSTR windowN
 	ZeroMemory(&window, sizeof(WNDCLASSEX));
 	window.cbSize = sizeof(WNDCLASSEX);
 	window.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	window.lpfnWndProc = windowProc;
+	// Window Proc
+	if (windowNum > 1)
+	{
+		window.lpfnWndProc = childWindowProc;
+	}
+	else
+	{
+		window.lpfnWndProc = windowProc;
+	}
+
 	window.lpszClassName = windowID.c_str();
 	window.style = CS_HREDRAW | CS_VREDRAW;
 	RegisterClassEx(&window);
