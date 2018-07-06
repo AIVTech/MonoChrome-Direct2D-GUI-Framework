@@ -114,7 +114,6 @@ public:
 
 	// Setters for Event Handlers
 	typedef void(*callback_function)(UIElement* sender);
-	void SetMouseClickEventHandler(callback_function func);
 
 	virtual ~UIButton();
 
@@ -144,8 +143,6 @@ private:
 	D2D1_RECT_F TextBorder;
 
 	// Event Handlers
-	EventHandler* MouseClickHandler;
-
 	EventHandler* MouseHoverHandler;
 	void SetMouseHoverEventHandler(callback_function func, callback_function funcOff);
 };

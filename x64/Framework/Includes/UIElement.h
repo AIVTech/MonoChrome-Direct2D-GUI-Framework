@@ -27,6 +27,10 @@ public:
 	virtual void FadeOut(int animationDelay, int decrementValue) = 0;
 	virtual void FadeIn(int animationDelay, int incrementValue, int finalAlpha) = 0;
 
+	typedef void(*uiElement_global_callback_function)(UIElement*);
+	virtual void AddWhileMouseDownEventHandler(uiElement_global_callback_function callbackFunc);
+	virtual void AddMouseClickEventHandler(uiElement_global_callback_function callbackFunc);
+
 private:
 };
 
