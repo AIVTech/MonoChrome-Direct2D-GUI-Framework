@@ -36,4 +36,20 @@ public:
 	uint8_t r, g, b, a;
 };
 
+class Color_LightGray : public Color
+{
+public:
+	Color_LightGray() : Color(180, 180, 180, 255) {}
+	uint8_t r, g, b, a;
+};
+
+class Color_DarkGray : public Color
+{
+public:
+	Color_DarkGray() : Color(60, 60, 60, 255) {}
+	uint8_t r, g, b, a;
+};
+
+
+
 #endif // !COLOR_H

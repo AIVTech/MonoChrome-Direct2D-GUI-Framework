@@ -23,12 +23,22 @@ public:
 
 	HWND GetHWND() { return this->hWnd; }
 	Graphics* GetGraphics() { return this->graphics; }
-	std::vector<UIElement*> elements;
+
+	void Add(UIElement* element);
+	void Remove(UIElement* element);
+
+	int GetWidth() { return this->width; }
+	int GetHeight() { return this->height; }
+
+	void SetResizable(bool state) { this->resizable = state; }
 
 	~UIWindow();
 private:
 	HWND hWnd;
 	Graphics* graphics;
+	bool resizable = true;
+	int width = 0, height = 0;
+	std::vector<UIElement*> elements;
 };
 
 #endif // !UIWINDOW_H

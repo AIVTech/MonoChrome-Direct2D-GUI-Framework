@@ -17,3 +17,5 @@
 #include "UITextbox.h"
 #include "UITextboxStateHandler.h"
 #include "Color.h"
+#include "UIFileChooser.h"
+#include "UIScrollableSlotArea.h"

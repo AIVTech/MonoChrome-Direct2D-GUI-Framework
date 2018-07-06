@@ -2,10 +2,17 @@
 #include "UIElement.h"
 
 int windowNum = 0;
+Graphics* graphicsReference;
 
 LRESULT CALLBACK windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	if (uMsg == WM_DESTROY) { PostQuitMessage(0); return 0; }
+	if (uMsg == WM_SIZE) 
+	{
+		RECT newSize;
+		GetClientRect(hwnd, &newSize);
+		graphicsReference->ResizeRenderTarget(newSize.right - newSize.left, newSize.bottom - newSize.top);
+	}
 
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
@@ -14,6 +21,7 @@ LRESULT CALLBACK windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 UIWindow::UIWindow()
 {
 	this->graphics = new Graphics();
+	graphicsReference = this->graphics;
 }
 
 UIWindow::~UIWindow()
@@ -23,6 +31,9 @@ UIWindow::~UIWindow()
 
 void UIWindow::mcCreateWindow(const int width, const int height, LPCWSTR windowName)
 {
+	this->width = width;
+	this->height = height;
+
 	std::wstring windowID = L"Window";
 	windowID.append(std::to_wstring(windowNum));
 	windowNum++;
@@ -42,6 +53,15 @@ void UIWindow::mcCreateWindow(const int width, const int height, LPCWSTR windowN
 	HWND hWnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, windowID.c_str(), windowName, WS_OVERLAPPEDWINDOW, 80, 80,
 		rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, NULL, 0);
 	if (!hWnd) { return; }
+
+	if (!this->resizable)
+	{
+		// get the styles and properties of your window
+		DWORD dwStyle = GetWindowLong(hWnd, GWL_STYLE);
+		dwStyle &= ~(WS_MAXIMIZE | WS_SIZEBOX);
+		// set the window with style without titlebar and sizebox
+		SetWindowLong(hWnd, GWL_STYLE, dwStyle);
+	}
 
 	if (!graphics->Init(hWnd))
 	{
@@ -82,5 +102,21 @@ void UIWindow::Update()
 	}
 
 	graphics->EndDraw();
+}
+
+void UIWindow::Add(UIElement* element)
+{
+	this->elements.push_back(element);
+}
+
+void UIWindow::Remove(UIElement* element)
+{
+	for (int i = 0; i < this->elements.size(); i++)
+	{
+		if (this->elements.at(i) == element)
+		{
+			this->elements.erase(this->elements.begin() + (i));
+		}
+	}
 }
 

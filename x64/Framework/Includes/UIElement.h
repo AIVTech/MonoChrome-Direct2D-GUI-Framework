@@ -15,8 +15,11 @@ public:
 	
 	virtual float GetPosX() = 0;
 	virtual float GetPosY() = 0;
+	virtual void SetPosition(float x, float y) = 0;
 	virtual float GetWidth() = 0;
 	virtual float GetHeight() = 0;
+	virtual void SetWidth(float width) = 0;
+	virtual void SetHeight(float height) = 0;
 	virtual Color* GetColor() = 0;
 	virtual bool GetVisible() = 0;
 	virtual void SetVisible(bool state) = 0;

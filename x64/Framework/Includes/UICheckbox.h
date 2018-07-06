@@ -60,6 +60,8 @@ public:
 	void SetTextHeight(float h) { this->TextHeight = h; }
 	void SetChecked(bool state) { this->Checked = state; }
 	void SetVisible(bool state) { this->Visible = state; }
+	void SetWidth(float size) { this->Size = size; }
+	void SetHeight(float size) { this->Size = size; }
 	void SetEnabled(bool state)
 	{ 
 		this->Enabled = state;

@@ -17,6 +17,8 @@ public:
 	void BeginDraw() { RenderTarget->BeginDraw(); }
 	void EndDraw() { RenderTarget->EndDraw(); }
 
+	void ResizeRenderTarget(int width, int height);
+
 	HWND GetHWND() { return hWnd; }
 
 	void ClearScreen(uint8_t r, uint8_t g, uint8_t b);
