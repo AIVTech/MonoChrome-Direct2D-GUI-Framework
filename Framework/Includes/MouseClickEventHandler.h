@@ -10,7 +10,7 @@
 class MouseClickEventHandler : public EventHandler
 {
 public:
-	MouseClickEventHandler(UIElement* sender, callback_function func);
+	MouseClickEventHandler(UIElement* sender, uiElement_global_callback_function func);
 
 	void StartListener();
 
@@ -18,7 +18,7 @@ public:
 
 private:
 	UIElement* sender;
-	callback_function CallbackFunc;
+	uiElement_global_callback_function CallbackFunc;
 };
 
 #endif

@@ -12,7 +12,6 @@ MouseMovedWhileDownEventHandler::~MouseMovedWhileDownEventHandler()
 {
 }
 
-
 void MouseMovedWhileDownEventHandler::StartListener()
 {
 	UISlider* slider = static_cast<UISlider*>(sender);

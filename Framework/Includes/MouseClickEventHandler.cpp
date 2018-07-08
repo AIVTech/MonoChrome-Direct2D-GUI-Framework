@@ -1,6 +1,6 @@
 #include "MouseClickEventHandler.h"
 
-MouseClickEventHandler::MouseClickEventHandler(UIElement* sender, callback_function func)
+MouseClickEventHandler::MouseClickEventHandler(UIElement* sender, uiElement_global_callback_function func)
 {
 	this->CallbackFunc = func;
 	this->sender = sender;

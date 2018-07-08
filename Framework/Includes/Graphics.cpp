@@ -166,3 +166,8 @@ void Graphics::DrawArc(float startX, float startY, float endX, float endY, float
 	
 }
 
+void Graphics::ResizeRenderTarget(int width, int height)
+{
+	this->RenderTarget->Resize(&D2D1::SizeU(width, height));
+}
+

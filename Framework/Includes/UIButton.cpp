@@ -140,11 +140,6 @@ void UIButton::Draw()
 		xPos + Margins, yPos + Margins, Width - Margins, Height - Margins, textColor->r, textColor->g, textColor->b, textColor->a); // text inside a button
 }
 
-void UIButton::SetMouseClickEventHandler(callback_function func)
-{
-	MouseClickHandler = new MouseClickEventHandler(this, func);
-}
-
 void UIButton::SetMouseHoverEventHandler(callback_function funcOn, callback_function funcOff)
 {
 	this->MouseHoverHandler = new MouseHoverEventHandler(this, funcOn, funcOff);
