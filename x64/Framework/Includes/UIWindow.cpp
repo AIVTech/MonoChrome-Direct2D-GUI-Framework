@@ -127,6 +127,7 @@ void UIWindow::Update()
 	}
 
 	graphics->EndDraw();
+	DispatchMessage(&msg);
 }
 
 void UIWindow::Add(UIElement* element)
@@ -145,3 +146,7 @@ void UIWindow::Remove(UIElement* element)
 	}
 }
 
+bool UIWindow::IsOpened()
+{
+	return GetMessage(&msg, 0, 0, 0);
+}

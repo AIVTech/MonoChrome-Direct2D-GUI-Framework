@@ -19,6 +19,7 @@ public:
 	void Hide();
 	void Dispose();
 	void Update();
+	bool IsOpened();
 
 	uint8_t r = 120, g = 120, b = 120;
 
@@ -41,6 +42,7 @@ private:
 	bool resizable = true;
 	int width = 0, height = 0;
 	std::vector<UIElement*> elements;
+	MSG msg;
 };
 
 #endif // !UIWINDOW_H
