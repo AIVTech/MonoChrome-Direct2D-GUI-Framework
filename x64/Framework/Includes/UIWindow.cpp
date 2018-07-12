@@ -1,5 +1,6 @@
 #include "UIWindow.h"
 #include "UIElement.h"
+#include "UICursor.h"
 
 int windowNum = 0;
 Graphics* graphicsReference;
@@ -110,6 +111,9 @@ void UIWindow::Dispose()
 
 void UIWindow::Update()
 {
+	// update cursor style
+	SetCursor(LoadCursor(NULL, UICursor::CurrentCursorStyle));
+
 	graphics->BeginDraw();
 	graphics->ClearScreen(r, g, b);
 

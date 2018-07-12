@@ -113,7 +113,7 @@ private:
 
 	// some slider-knob attributes
 	float knobPosX = xPos + currentValue;
-	Color* knobColor = new Color_White();
+	Color* knobColor = Color::White;
 	float Radius = Height*2;
 
 	// Event Handler

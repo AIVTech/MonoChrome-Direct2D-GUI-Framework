@@ -101,7 +101,7 @@ void UIScrollableSlotArea::Draw()
 		}
 
 		// Draw Sroll Bar (Vertical)
-		Color* sbColor = new Color_DarkGray();
+		Color* sbColor = Color::DarkGray;
 		this->srcWindow->GetGraphics()->DrawRectangle(scrollBarPosX, scrollBarPosY, scrollBarWidth, scrollBarHeight, 
 			sbColor->r, sbColor->g, sbColor->b, sbColor->a, 0, true);
 	}

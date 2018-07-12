@@ -97,7 +97,7 @@ private:
 	int FontSize = 10;
 	float xPos = 0, yPos = 0, Width = 0, Height = 0;
 	Color* color = new Color(200, 200, 200, 255);
-	Color* textColor = new Color_Black();
+	Color* textColor = Color::Black;
 	float Stroke = 1.0f;
 	float Margins = 0.1f;
 	bool Filled = false;

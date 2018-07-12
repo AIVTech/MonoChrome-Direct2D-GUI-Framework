@@ -66,7 +66,7 @@ private:
 	float xPos = 0, yPos = 0, Width = 0, Height = 0;
 	bool Visible = true;
 	bool Enabled = true;
-	Color* color = new Color_LightGray();
+	Color* color = Color::LightGray;
 	uint8_t normalAlpha = color->a;
 
 	// Slots and their properties

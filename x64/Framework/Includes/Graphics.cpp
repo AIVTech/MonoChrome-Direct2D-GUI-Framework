@@ -171,3 +171,73 @@ void Graphics::ResizeRenderTarget(int width, int height)
 	this->RenderTarget->Resize(&D2D1::SizeU(width, height));
 }
 
+ID2D1Bitmap* Graphics::mcLoadImage(const wchar_t* filepath)
+{
+	HRESULT hr;
+	IWICImagingFactory* wicFactory = NULL;
+	hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, (LPVOID*)&wicFactory);
+	if (hr != S_OK)
+	{
+		return NULL;
+	}
+	
+	IWICBitmapDecoder* wicDecoder = NULL;
+	hr = wicFactory->CreateDecoderFromFilename(filepath, NULL, GENERIC_READ, WICDecodeMetadataCacheOnLoad, &wicDecoder);
+	if (hr != S_OK)
+	{
+		return NULL;
+	}
+
+	IWICBitmapFrameDecode* wicFrame = NULL;
+	hr = wicDecoder->GetFrame(0, &wicFrame); // taking first frame for a static image
+	if (hr != S_OK)
+	{
+		return NULL;
+	}
+
+	// create converter
+	IWICFormatConverter* wicConverter = NULL;
+	hr = wicFactory->CreateFormatConverter(&wicConverter);
+	if (hr != S_OK)
+	{
+		return NULL;
+	}
+
+	// setup the converter
+	hr = wicConverter->Initialize(
+		wicFrame, 
+		GUID_WICPixelFormat32bppPBGRA, 
+		WICBitmapDitherTypeNone, 
+		NULL, 
+		0.0,	// alpha transparency percentage
+		WICBitmapPaletteTypeCustom);
+	if (hr != S_OK)
+	{
+		return NULL;
+	}
+
+	// creating D2D1 Bitmap
+	ID2D1Bitmap* bmp;
+	RenderTarget->CreateBitmapFromWicBitmap(wicConverter, NULL, &bmp);
+
+	// releasing resources
+	if (wicFactory) wicFactory->Release();
+	if (wicDecoder) wicDecoder->Release();
+	if (wicConverter) wicConverter->Release();
+	if (wicFrame) wicFrame->Release();
+
+	return bmp;
+}
+
+void Graphics::DrawBitmap(ID2D1Bitmap* bmp, float xPos, float yPos, float width, float height, float opacity)
+{
+	RenderTarget->DrawBitmap(
+		bmp,	// bitmap
+		//D2D1::RectF(xPos, yPos, bmp->GetSize().width, bmp->GetSize().height), // destination rectangle
+		D2D1::RectF(xPos, yPos, xPos + width, yPos + height), // destination rectangle
+		opacity,
+		D2D1_BITMAP_INTERPOLATION_MODE::D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
+		//D2D1::RectF(xPos, yPos, bmp->GetSize().width, bmp->GetSize().height) // source rectangle
+		D2D1::RectF(0.0f, 0.0f, bmp->GetSize().width, bmp->GetSize().height) // source rectangle
+	);
+}

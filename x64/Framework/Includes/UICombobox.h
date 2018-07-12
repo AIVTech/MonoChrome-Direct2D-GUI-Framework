@@ -108,7 +108,7 @@ private:
 	UIWindow* srcWindow;
 	float xPos = 0, yPos = 0, Width = 0, Height = 0;
 	uint8_t normalAlpha = 255;
-	Color* color = new Color_White();
+	Color* color = Color::White;
 	bool Visible = true;
 	bool Enabled = true;
 	std::vector<std::wstring> Items = { L" " };

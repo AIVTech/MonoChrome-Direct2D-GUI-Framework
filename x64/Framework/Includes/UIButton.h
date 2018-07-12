@@ -125,7 +125,7 @@ private:
 	float xPos = 0, yPos = 0, Width = 0, Height = 0;
 	Color* color = new Color(140, 140, 140, 255);
 	uint8_t normalAlpha = color->a;
-	Color* textColor = new Color_Black();
+	Color* textColor = Color::Black;
 	Color* borderColor = new Color(40, 40, 40, 255);
 	float borderStroke = 2.0f;
 	float Stroke = 1.0f;

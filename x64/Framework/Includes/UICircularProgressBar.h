@@ -101,8 +101,8 @@ private:
 
 	float xPos = 0, yPos = 0, Width = 0, Height = 0;
 	uint8_t normalAlpha = 255;
-	Color* color = new Color_Black();
-	Color* progressColor = new Color_LimeGreen();
+	Color* color = Color::Black;
+	Color* progressColor = Color::Cyan;
 	float arcEndPointX = xPos;
 	float arcEndPointY = yPos - Radius;
 	float Stroke = 4.0f;

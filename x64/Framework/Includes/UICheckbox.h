@@ -124,8 +124,8 @@ private:
 	std::wstring FontName = std::wstring(L"Arial");
 	int FontSize = 10;
 	float xPos = 0, yPos = 0, Size = 0, TextWidth = 0, TextHeight = 0;
-	Color* color = new Color_White();
-	Color* textColor = new Color_Black();
+	Color* color = Color::White;
+	Color* textColor = Color::Black;
 	uint8_t normalAlpha = 255;
 	float Margins = 1.0f;
 	bool Visible = true;

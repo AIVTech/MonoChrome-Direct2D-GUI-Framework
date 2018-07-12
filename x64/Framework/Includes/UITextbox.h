@@ -140,9 +140,9 @@ private:
 	std::wstring FontName = std::wstring(L"Arial");
 	float FontSize = 10;
 	float xPos = 0.0f, yPos = 0.0f, Width = 0.0f, Height = 0.0f;
-	Color* color = new Color_White();
-	Color* textColor = new Color_Black();
-	Color* borderColor = new Color_Black();
+	Color* color = Color::White;
+	Color* textColor = Color::Black;
+	Color* borderColor = Color::Black;
 	uint8_t normalAlpha = 255;
 	float Stroke = 1.0f;
 	float BorderStroke = 1.0f;
