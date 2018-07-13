@@ -92,6 +92,12 @@ UILabel::~UILabel()
 void UILabel::Draw()
 {
 	this->srcWindow->GetGraphics()->DrawRectangle(xPos, yPos, Width, Height, color->r, color->g, color->b, color->a, Stroke, Filled);
+
+	DWRITE_TEXT_ALIGNMENT textAllignment;
+	DWRITE_PARAGRAPH_ALIGNMENT paragraphAllignment;
+	MakeTextAllignment(this->TextAllignment, textAllignment, paragraphAllignment);
+
 	this->srcWindow->GetGraphics()->drawText(std::wstring(Text), FontName, FontSize, 
-		xPos+Margins, yPos+Margins, Width-Margins, Height-Margins, textColor->r, textColor->g, textColor->b, textColor->a);
+		xPos+Margins, yPos+Margins, Width-Margins, Height-Margins, textColor->r, textColor->g, textColor->b, textColor->a,
+		textAllignment, paragraphAllignment);
 }

@@ -136,8 +136,13 @@ void UIButton::Draw()
 			borderColor->r, borderColor->g, borderColor->b, borderColor->a, borderStroke, false); // border rectangle to indicate that its a button
 	}
 
+	DWRITE_TEXT_ALIGNMENT textAllignment;
+	DWRITE_PARAGRAPH_ALIGNMENT paragraphAllignment;
+	MakeTextAllignment(this->TextAllignment, textAllignment, paragraphAllignment);
+
 	this->srcWindow->GetGraphics()->drawText(std::wstring(Text), FontName, FontSize,
-		xPos + Margins, yPos + Margins, Width - Margins, Height - Margins, textColor->r, textColor->g, textColor->b, textColor->a); // text inside a button
+		xPos + Margins, yPos + Margins, Width - Margins, Height - Margins, textColor->r, textColor->g, textColor->b, textColor->a,
+		textAllignment, paragraphAllignment); // text inside a button
 }
 
 void UIButton::SetMouseHoverEventHandler(callback_function funcOn, callback_function funcOff)

@@ -135,6 +135,7 @@ private:
 
 	std::wstring Text = std::wstring(L"");
 	std::vector<std::wstring> previousText = { Text };
+	int TextAllignment = TEXT_ALLIGNMENT_CENTER;
 	int displayStartIndex = 0;
 	int textLimit = 14;
 	std::wstring FontName = std::wstring(L"Arial");

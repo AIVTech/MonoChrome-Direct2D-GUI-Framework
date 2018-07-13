@@ -114,8 +114,14 @@ void UITextbox::Draw()
 			txt.erase(txt.begin(), txt.begin() + startIndex);
 		}
 	}
+
+	DWRITE_TEXT_ALIGNMENT textAllignment;
+	DWRITE_PARAGRAPH_ALIGNMENT paragraphAllignment;
+	MakeTextAllignment(this->TextAllignment, textAllignment, paragraphAllignment);
+
 	this->srcWindow->GetGraphics()->drawText(std::wstring(txt), FontName, FontSize,
-		xPos + 0.2f, yPos + 0.2f, Width - 0.2f, Height - 0.2f, textColor->r, textColor->g, textColor->b, textColor->a); // Text.
+		xPos + 0.2f, yPos + 0.2f, Width - 0.2f, Height - 0.2f, textColor->r, textColor->g, textColor->b, textColor->a,
+		textAllignment, paragraphAllignment); // Text.
 }
 
 void UITextbox::SetTextboxStateHandler()

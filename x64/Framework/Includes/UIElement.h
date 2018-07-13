@@ -6,6 +6,10 @@
 #include "Color.h"
 #include <thread>
 
+#define TEXT_ALLIGNMENT_CENTER 1
+#define TEXT_ALLIGNMENT_LEFT 2 
+#define TEXT_ALLIGNMENT_RIGHT 3 
+
 class UIElement 
 {
 public:
@@ -30,6 +34,30 @@ public:
 	typedef void(*uiElement_global_callback_function)(UIElement*);
 	virtual void AddWhileMouseDownEventHandler(uiElement_global_callback_function callbackFunc);
 	virtual void AddMouseClickEventHandler(uiElement_global_callback_function callbackFunc);
+
+	void MakeTextAllignment(int allignment, DWRITE_TEXT_ALIGNMENT& textAllignment, DWRITE_PARAGRAPH_ALIGNMENT& paragraphAllignment)
+	{
+		if (allignment == TEXT_ALLIGNMENT_CENTER)
+		{
+			textAllignment = DWRITE_TEXT_ALIGNMENT_CENTER;
+			paragraphAllignment = DWRITE_PARAGRAPH_ALIGNMENT_CENTER;
+		}
+		else if (allignment == TEXT_ALLIGNMENT_LEFT)
+		{
+			textAllignment = DWRITE_TEXT_ALIGNMENT_LEADING;
+			paragraphAllignment = DWRITE_PARAGRAPH_ALIGNMENT_NEAR;
+		}
+		else if (allignment == TEXT_ALLIGNMENT_RIGHT)
+		{
+			textAllignment = DWRITE_TEXT_ALIGNMENT_TRAILING;
+			paragraphAllignment = DWRITE_PARAGRAPH_ALIGNMENT_FAR;
+		}
+		else
+		{
+			textAllignment = DWRITE_TEXT_ALIGNMENT_CENTER;
+			paragraphAllignment = DWRITE_PARAGRAPH_ALIGNMENT_CENTER;
+		}
+	}
 
 private:
 };

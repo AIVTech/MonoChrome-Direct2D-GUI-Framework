@@ -112,6 +112,7 @@ private:
 	bool Visible = true;
 	bool Enabled = true;
 	std::vector<std::wstring> Items = { L" " };
+	int TextAllignment = TEXT_ALLIGNMENT_CENTER;
 	int SelectedIndex = 0;
 	bool drawItems = false;
 	int hoverIndex = -1;

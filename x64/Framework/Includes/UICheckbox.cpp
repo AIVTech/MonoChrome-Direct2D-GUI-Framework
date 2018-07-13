@@ -55,6 +55,8 @@ UICheckbox::UICheckbox(UIWindow* srcWindow, std::wstring text, std::wstring font
 	this->xPos = xPos;
 	this->yPos = yPos;
 	this->Size = size;
+	this->TextWidth = size * (FontSize * 2 / 3);
+	this->TextHeight = size;
 	SetMouseClickHandler(ChangeState_OnMouseClick);
 }
 
@@ -108,13 +110,22 @@ void UICheckbox::Draw()
 			color->r, color->g, color->b, color->a, 0, true);
 	}
 
-	srcWindow->GetGraphics()->drawText(Text, FontName, FontSize, xPos+Size, yPos-Size/2, TextWidth, TextHeight, 
-		textColor->r, textColor->g, textColor->b, textColor->a);
+	DWRITE_TEXT_ALIGNMENT textAllignment;
+	DWRITE_PARAGRAPH_ALIGNMENT paragraphAllignment;
+	MakeTextAllignment(this->TextAllignment, textAllignment, paragraphAllignment);
+
+	srcWindow->GetGraphics()->drawText(Text, FontName, FontSize, xPos + Size + Margins, yPos, TextWidth, TextHeight, 
+		textColor->r, textColor->g, textColor->b, textColor->a, textAllignment, paragraphAllignment);
+
+
+	textAllignment = DWRITE_TEXT_ALIGNMENT_CENTER;
+	paragraphAllignment = DWRITE_PARAGRAPH_ALIGNMENT_CENTER;
 
 	if (Checked)
 	{
 		// Indicate that the checkbox is checked.
-		srcWindow->GetGraphics()->drawText(L"✔", L"Verdana", Size-10, xPos+0.2f, yPos+0.2f, Size-0.2f, Size-0.2f, 0, 0, 0, 255);
+		srcWindow->GetGraphics()->drawText(L"✔", L"Verdana", Size-10, xPos+0.2f, yPos+0.2f, Size-0.2f, Size-0.2f, 0, 0, 0, 255, 
+			textAllignment, paragraphAllignment);
 	}
 }
 

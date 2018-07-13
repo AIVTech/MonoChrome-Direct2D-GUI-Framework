@@ -34,7 +34,8 @@ public:
 		float radiusX, float radiusY, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float stroke, bool filled);
 
 	void drawText(const std::wstring& text, std::wstring font, WCHAR fontSize,
-		float xPos, float yPos, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+		float xPos, float yPos, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a,
+		DWRITE_TEXT_ALIGNMENT textAllignment, DWRITE_PARAGRAPH_ALIGNMENT paragraphAllignment);
 
 	void DrawArc(float startX, float startY, float endX, float endY, float size, 
 		D2D1_SWEEP_DIRECTION direction, D2D1_ARC_SIZE arcSize, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float stroke);

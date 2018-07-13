@@ -62,9 +62,11 @@ void UICombobox::Draw()
 			roundCornerRadiusX, roundCornerRadiusY, 128, 128, 128, 255, 1.0f, false); // Border Box
 	}
 
-	this->srcWindow->GetGraphics()->drawText(L"▼", L"Arial", 16, xPos + Width - 14.0f, yPos, 4.0f, Height - 0.6f, 0, 0, 0, 255); // Arrow Key Down
+	this->srcWindow->GetGraphics()->drawText(L"▼", L"Arial", 16, xPos + Width - 14.0f, yPos, 4.0f, Height - 0.6f, 
+		0, 0, 0, 255, DWRITE_TEXT_ALIGNMENT_CENTER, DWRITE_PARAGRAPH_ALIGNMENT_CENTER); // Arrow Key Down
 
-	this->srcWindow->GetGraphics()->drawText(Items.at(SelectedIndex), L"Arial", Height - 10, xPos + 2.0f, yPos, Width - 14.0f, Height, 0, 0, 0, 255); // Actual Text
+	this->srcWindow->GetGraphics()->drawText(Items.at(SelectedIndex), L"Arial", Height - 10, xPos + 2.0f, yPos, Width - 14.0f, Height, 
+		0, 0, 0, 255, DWRITE_TEXT_ALIGNMENT_CENTER, DWRITE_PARAGRAPH_ALIGNMENT_CENTER); // Actual Text
 
 	if (this->drawItems)
 	{
@@ -91,7 +93,12 @@ void UICombobox::Draw()
 				this->srcWindow->GetGraphics()->DrawRectangle(xPos - 0.1f, y,
 					w + 0.1f, Height + 0.1f, 128, 128, 128, 255, 1.0f, false); // Border box
 
-				this->srcWindow->GetGraphics()->drawText(Items.at(i), L"Arial", Height - 10, xPos + 2.0f, y, w, Height, textRed, textGreen, textBlue, 255);
+				DWRITE_TEXT_ALIGNMENT textAllignment;
+				DWRITE_PARAGRAPH_ALIGNMENT paragraphAllignment;
+				MakeTextAllignment(this->TextAllignment, textAllignment, paragraphAllignment);
+
+				this->srcWindow->GetGraphics()->drawText(Items.at(i), L"Arial", Height - 10, xPos + 2.0f, y, w, Height, 
+					textRed, textGreen, textBlue, 255, textAllignment, paragraphAllignment);
 			}
 		}
 	}

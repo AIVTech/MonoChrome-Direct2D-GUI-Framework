@@ -50,6 +50,7 @@ public:
 	// Setters
 	void SetText(std::wstring text) { this->Text = text; }
 	void SetFontName(std::wstring fontName) { this->Text = fontName; }
+	void SetTextAllignment(int alligment) { this->TextAllignment = alligment; }
 	void SetFontSize(int size) { this->FontSize = size; }
 	void SetPosition(float x, float y) { this->xPos = x; this->yPos = y; }
 	void SetColor(Color* color) { this->color = color; this->normalAlpha = color->a; }
@@ -121,6 +122,7 @@ private:
 	UIWindow* srcWindow;
 	std::wstring Text = std::wstring(L"");
 	std::wstring FontName = std::wstring(L"Arial");
+	int TextAllignment = TEXT_ALLIGNMENT_CENTER;
 	int FontSize = 10;
 	float xPos = 0, yPos = 0, Width = 0, Height = 0;
 	Color* color = new Color(140, 140, 140, 255);

@@ -29,6 +29,9 @@ bool Graphics::Init(HWND hWnd)
 
 	if (result != S_OK) return false;
 
+	RenderTarget->SetAntialiasMode(D2D1_ANTIALIAS_MODE_FORCE_DWORD);
+	RenderTarget->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_CLEARTYPE);
+
 	return true;
 }
 
@@ -104,7 +107,8 @@ void Graphics::DrawRoundedRectangle(float x, float y, float width, float height,
 }
 
 void Graphics::drawText(const std::wstring& text, std::wstring font, WCHAR fontSize, 
-	float xPos, float yPos, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+	float xPos, float yPos, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a, 
+	DWRITE_TEXT_ALIGNMENT textAllignment, DWRITE_PARAGRAPH_ALIGNMENT paragraphAllignment)
 {
 	float red = ConvertUI8ToFloat(r);
 	float green = ConvertUI8ToFloat(g);
@@ -121,7 +125,7 @@ void Graphics::drawText(const std::wstring& text, std::wstring font, WCHAR fontS
 		DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, fontSize, L"", &format);
 
 	// Center the text horizontally and vertically.
-	format->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+	format->SetTextAlignment(textAllignment);
 	format->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 
 	RenderTarget->DrawTextW(text.c_str(), text.size(), format, D2D1::RectF(xPos, yPos, xPos+width, yPos+height), brush);
