@@ -63,15 +63,15 @@ public:
 
 private:
 	UIWindow * srcWindow;
-	float xPos = 0, yPos = 0, Width = 0, Height = 0;
+	float xPos = 40, yPos = 30, Width = 360, Height = 300;
 	bool Visible = true;
 	bool Enabled = true;
-	Color* color = Color::LightGray;
+	Color* color = Color::White;
 	uint8_t normalAlpha = color->a;
 
 	// Slots and their properties
 	std::vector<UISlot*> slots;
-	float slotWidth = 0, slotHeight = 0, distanceBetweenSlots = 0;
+	float slotWidth = 180, slotHeight = 30, distanceBetweenSlots = 0;
 	float slotMarginTop = 0, slotMarginLeft = 0;
 
 	// Scroll bars

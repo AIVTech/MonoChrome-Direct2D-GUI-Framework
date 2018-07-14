@@ -99,14 +99,14 @@ private:
 	void UpdateArcEndPoint();
 	D2D1_ARC_SIZE arcSize = D2D1_ARC_SIZE_SMALL;
 
-	float xPos = 0, yPos = 0, Width = 0, Height = 0;
+	float xPos = 50, yPos = 40, Width = 0, Height = 0;
 	uint8_t normalAlpha = 255;
 	Color* color = Color::Black;
 	Color* progressColor = Color::Cyan;
 	float arcEndPointX = xPos;
 	float arcEndPointY = yPos - Radius;
 	float Stroke = 4.0f;
-	float Radius = 30.0f;
+	float Radius = 20.0f;
 	float Value = 0.0f;
 	float Interval = 1.0f;
 	float MinValue = 0.0f, MaxValue = 100.0f;

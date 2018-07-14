@@ -120,11 +120,11 @@ public:
 
 private:
 	UIWindow* srcWindow;
-	std::wstring Text = std::wstring(L"");
+	std::wstring Text = std::wstring(L"Button");
 	std::wstring FontName = std::wstring(L"Arial");
 	int TextAllignment = TEXT_ALLIGNMENT_CENTER;
-	int FontSize = 10;
-	float xPos = 0, yPos = 0, Width = 0, Height = 0;
+	int FontSize = 14;
+	float xPos = 10, yPos = 20, Width = 100, Height = 40;
 	Color* color = new Color(140, 140, 140, 255);
 	uint8_t normalAlpha = color->a;
 	Color* textColor = Color::Black;
@@ -135,7 +135,7 @@ private:
 	bool Filled = true;
 	bool Visible = true;
 	bool Enabled = true;
-	bool RoundedCorners = false;
+	bool RoundedCorners = true;
 	float roundCornerRadiusX = 4, roundCornerRadiusY = 4;
 
 	// Entire Label Border

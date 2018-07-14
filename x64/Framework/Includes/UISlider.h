@@ -102,12 +102,12 @@ public:
 
 private:
 	UIWindow* srcWindow;
-	float xPos = 0, yPos = 0, Width = 120;
+	float xPos = 40, yPos = 60, Width = 120;
 	uint8_t normalAlpha = 255;
 	Color* color = new Color(80, 80, 80, 255);
 	float Height = 4;
 	float MinValue = 0, MaxValue = 100, Intervals = 10;
-	float currentValue = MinValue;
+	float currentValue = 12;
 	bool Visible = true;
 	bool Enabled = true;
 

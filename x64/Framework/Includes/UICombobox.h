@@ -106,7 +106,7 @@ public:
 
 private:
 	UIWindow* srcWindow;
-	float xPos = 0, yPos = 0, Width = 0, Height = 0;
+	float xPos = 30, yPos = 60, Width = 160, Height = 26;
 	uint8_t normalAlpha = 255;
 	Color* color = Color::White;
 	bool Visible = true;
@@ -116,7 +116,7 @@ private:
 	int SelectedIndex = 0;
 	bool drawItems = false;
 	int hoverIndex = -1;
-	bool RoundedCorners = false;
+	bool RoundedCorners = true;
 	float roundCornerRadiusX = 4, roundCornerRadiusY = 4;
 
 	// Event Handlers

@@ -121,18 +121,18 @@ public:
 
 private:
 	UIWindow* srcWindow;
-	std::wstring Text = std::wstring(L"");
+	std::wstring Text = std::wstring(L"Checkbox");
 	std::wstring FontName = std::wstring(L"Arial");
 	int TextAllignment = TEXT_ALLIGNMENT_CENTER;
-	int FontSize = 10;
-	float xPos = 0, yPos = 0, Size = 0, TextWidth = 100, TextHeight = 40;
+	int FontSize = 14;
+	float xPos = 40, yPos = 30, Size = 20, TextWidth = 100, TextHeight = 20;
 	Color* color = Color::White;
 	Color* textColor = Color::Black;
 	uint8_t normalAlpha = 255;
-	float Margins = 1.0f;
+	float Margins = 4.0f;
 	bool Visible = true;
 	bool Enabled = true;
-	bool RoundedCorners = false;
+	bool RoundedCorners = true;
 	float roundCornerRadiusX = 4, roundCornerRadiusY = 4;
 
 	// Checked State

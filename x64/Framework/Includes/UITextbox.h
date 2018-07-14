@@ -137,10 +137,10 @@ private:
 	std::vector<std::wstring> previousText = { Text };
 	int TextAllignment = TEXT_ALLIGNMENT_CENTER;
 	int displayStartIndex = 0;
-	int textLimit = 14;
+	int textLimit = 10;
 	std::wstring FontName = std::wstring(L"Arial");
-	float FontSize = 10;
-	float xPos = 0.0f, yPos = 0.0f, Width = 0.0f, Height = 0.0f;
+	float FontSize = 14;
+	float xPos = 40.0f, yPos = 40.0f, Width = 140.0f, Height = 40.0f;
 	Color* color = Color::White;
 	Color* textColor = Color::Black;
 	Color* borderColor = Color::Black;
