@@ -8,7 +8,7 @@ Graphics* graphicsReference;
 LRESULT CALLBACK windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	if (uMsg == WM_DESTROY) { PostQuitMessage(0); return 0; }
-	if (uMsg == WM_SIZE) 
+	if (uMsg == WM_SIZE)
 	{
 		RECT newSize;
 		GetClientRect(hwnd, &newSize);

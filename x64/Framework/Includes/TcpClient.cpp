@@ -8,21 +8,24 @@ TcpClient::~TcpClient()
 {
 }
 
-Socket TcpClient::Connect(const char* ip, int port)
+Socket& TcpClient::Connect(const char* ip, int port)
 {
+	Socket* resultingSocket(NULL);
 	// initialize winsock
 	WSAData data;
 	WORD ver = MAKEWORD(2, 2);
 	int wsResult = WSAStartup(ver, &data);
 	if (wsResult != 0) {
-		return NULL;
+		//return NULL;
+		return *resultingSocket;
 	}
 
 	// create socket
 	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0); // SOCK_STREAM is for TCP, SOCK_DGRAM is for UDP
 	if (sock == INVALID_SOCKET) {
 		WSACleanup();
-		return NULL;
+		//return NULL;
+		return *resultingSocket;
 	}
 
 	// Fill in a hint structure
@@ -38,5 +41,6 @@ Socket TcpClient::Connect(const char* ip, int port)
 		connResult = connect(sock, (sockaddr*)&hint, sizeof(hint));
 	}
 	
-	return Socket(sock);
+	resultingSocket = new Socket(sock);
+	return *resultingSocket;
 }

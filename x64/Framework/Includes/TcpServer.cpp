@@ -8,8 +8,9 @@ TcpServer::~TcpServer()
 {
 }
 
-Socket TcpServer::Listen(int port)
+Socket& TcpServer::Listen(int port)
 {
+	Socket* resultingSocket(NULL);
 	WSADATA wsaData;
 	int iResult;
 
@@ -22,7 +23,7 @@ Socket TcpServer::Listen(int port)
 	// Initialize Winsock
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (iResult != 0) {
-		return false;
+		return *resultingSocket;
 	}
 
 	ZeroMemory(&hints, sizeof(hints));
@@ -35,7 +36,8 @@ Socket TcpServer::Listen(int port)
 	iResult = getaddrinfo(NULL, std::to_string(port).c_str(), &hints, &result);		// setting the port
 	if (iResult != 0) {
 		WSACleanup();
-		return NULL;
+		//return NULL;
+		return *resultingSocket;
 	}
 
 	// Create a SOCKET for connecting to server
@@ -43,7 +45,8 @@ Socket TcpServer::Listen(int port)
 	if (ListenSocket == INVALID_SOCKET) {
 		freeaddrinfo(result);
 		WSACleanup();
-		return NULL;
+		//return NULL;
+		return *resultingSocket;
 	}
 
 	// Setup the TCP listening socket
@@ -52,7 +55,8 @@ Socket TcpServer::Listen(int port)
 		freeaddrinfo(result);
 		closesocket(ListenSocket);
 		WSACleanup();
-		return NULL;
+		//return NULL;
+		return *resultingSocket;
 	}
 
 	freeaddrinfo(result);
@@ -61,7 +65,8 @@ Socket TcpServer::Listen(int port)
 	if (iResult == SOCKET_ERROR) {
 		closesocket(ListenSocket);
 		WSACleanup();
-		return NULL;
+		//return NULL;
+		return *resultingSocket;
 	}
 
 	// Accept a client socket
@@ -69,8 +74,10 @@ Socket TcpServer::Listen(int port)
 	if (ClientSocket == INVALID_SOCKET) {
 		closesocket(ListenSocket);
 		WSACleanup();
-		return NULL;
+		//return NULL;
+		return *resultingSocket;
 	}
 
-	return Socket(ClientSocket);
+	resultingSocket = new Socket(ClientSocket);
+	return *resultingSocket;
 }

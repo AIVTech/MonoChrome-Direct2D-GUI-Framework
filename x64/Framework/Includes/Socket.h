@@ -24,11 +24,12 @@ public:
 	int Send(std::wstring data);
 
 	bool IsConnected();
+	SOCKET socket;
 
 	void Close();
 	~Socket();
 private:
-	SOCKET socket;
+	//SOCKET socket;
 	int bufferSize = 512;
 };
 

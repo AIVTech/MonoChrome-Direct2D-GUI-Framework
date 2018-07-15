@@ -13,7 +13,7 @@ class TcpServer
 public:
 	TcpServer();
 
-	Socket Listen(int port);
+	Socket& Listen(int port);
 
 	~TcpServer();
 };
